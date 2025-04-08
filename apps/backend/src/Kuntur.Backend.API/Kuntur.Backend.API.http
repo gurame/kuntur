@@ -1,0 +1,6 @@
+@Kuntur.Backend.API_HostAddress = http://localhost:5170
+
+GET {{Kuntur.Backend.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
