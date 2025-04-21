@@ -15,13 +15,13 @@ public abstract class BaseDbContext(DbContextOptions options, IHttpContextAccess
 
         var result = await base.SaveChangesAsync(cancellationToken);
 
-        Queue<IDomainEvent> domainEventsQueue = _httpContextAccessor.HttpContext.Items.TryGetValue("DomainEvents", out var value) == true &&
+        Queue<IDomainEvent> domainEventsQueue = _httpContextAccessor.HttpContext.Items.TryGetValue(Constants.DomainEventsKey, out var value) == true &&
             value is Queue<IDomainEvent> existingDomainEvents
             ? existingDomainEvents
             : new();
 
         domainEvents.ForEach(domainEventsQueue.Enqueue);
-        _httpContextAccessor.HttpContext.Items["DomainEvents"] = domainEventsQueue;
+        _httpContextAccessor.HttpContext.Items[Constants.DomainEventsKey] = domainEventsQueue;
 
         return result;
     }
