@@ -1,12 +1,11 @@
 using Kuntur.API.Common.Domain;
 using Kuntur.API.Common.Domain.EventualConsistency;
-using Kuntur.API.Common.Infrastructure.Persistance;
-
+using Kuntur.API.Common.Infrastructure.Persistence;
 using MediatR;
 
 using Microsoft.AspNetCore.Http;
 
-namespace Kuntur.API.Common.Infrastructure.Middleware;
+namespace Kuntur.API.Common.Infrastructure.Middlewares;
 public class EventualConsistencyMiddleware(RequestDelegate next)
 {
     private readonly RequestDelegate _next = next;

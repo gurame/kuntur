@@ -2,7 +2,7 @@ using Kuntur.API.Common.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kuntur.API.Common.Infrastructure.Persistance;
+namespace Kuntur.API.Common.Infrastructure.Persistence;
 public abstract class BaseDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor) : DbContext(options)
 {
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
@@ -15,7 +15,7 @@ public abstract class BaseDbContext(DbContextOptions options, IHttpContextAccess
 
         var result = await base.SaveChangesAsync(cancellationToken);
 
-        Queue<IDomainEvent> domainEventsQueue = _httpContextAccessor.HttpContext.Items.TryGetValue(Constants.DomainEventsKey, out var value) == true &&
+        Queue<IDomainEvent> domainEventsQueue = _httpContextAccessor.HttpContext!.Items.TryGetValue(Constants.DomainEventsKey, out var value) == true &&
             value is Queue<IDomainEvent> existingDomainEvents
             ? existingDomainEvents
             : new();

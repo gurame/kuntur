@@ -1,7 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Http" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
+    <PackageReference Include="Carter" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kuntur.API.Identity\Kuntur.API.Identity.csproj" />
+    <ProjectReference Include="..\Kuntur.API.Marketplace\Kuntur.API.Marketplace.csproj" />
+    <ProjectReference Include="..\Kuntur.API.Onboarding\Kuntur.API.Onboarding.csproj" />
   </ItemGroup>
 
 </Project>
