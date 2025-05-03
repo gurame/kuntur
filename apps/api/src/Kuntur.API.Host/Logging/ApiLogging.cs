@@ -1,6 +1,6 @@
 using Serilog;
 
-namespace Kuntur.API.Host.Configuration.Logging;
+namespace Kuntur.API.Host.Logging;
 
 public static class ApiDocumentation
 {

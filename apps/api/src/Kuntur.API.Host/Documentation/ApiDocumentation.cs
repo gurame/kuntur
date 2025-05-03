@@ -4,7 +4,7 @@ using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-namespace Kuntur.API.Host.Configuration.Documentation;
+namespace Kuntur.API.Host.Documentation;
 
 public static class ApiDocumentation
 {

@@ -2,7 +2,7 @@ using Asp.Versioning;
 using Asp.Versioning.Builder;
 using Asp.Versioning.Conventions;
 
-namespace Kuntur.API.Host.Configuration.Versioning;
+namespace Kuntur.API.Host.Versioning;
 
 public static class ApiVersioning
 {

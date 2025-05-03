@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Serilog.Core;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-namespace Kuntur.API.Host.Configuration.Documentation;
+namespace Kuntur.API.Host.Documentation;
 
 public class ConfigureSwaggerUIOptions(IApiVersionDescriptionProvider p) : IConfigureOptions<SwaggerUIOptions>
 {
@@ -16,6 +16,7 @@ public class ConfigureSwaggerUIOptions(IApiVersionDescriptionProvider p) : IConf
         c.DocumentTitle = "Kuntur API";
         c.RoutePrefix   = "docs";
 
+        // TODO: Uncomment this when we have multiple versions fixed
         // foreach (var desc in _provider.ApiVersionDescriptions)
         // {
         //     c.SwaggerEndpoint(

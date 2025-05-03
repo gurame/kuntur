@@ -21,16 +21,5 @@ public class Endpoint : IEndpoint
         })
         .Produces<Response>(StatusCodes.Status200OK)
         .MapToApiVersion(1, 0);
-
-        app.MapPost(Routes.Create, async (ISender sender, Request request) =>
-        {
-            var response = await sender.Send(new Command(
-                request.Name, request.TaxId,
-                request.FirstName, request.LastName,
-                request.PhoneNumber, request.EmailAddress, request.Password));
-
-            return TypedResults.Ok(response);
-        })
-        .MapToApiVersion(2, 0);
     }
 }

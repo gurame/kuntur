@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Kuntur.API.Host.Configuration.Documentation;
+namespace Kuntur.API.Host.Documentation;
 
 public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider p) : IConfigureOptions<SwaggerGenOptions>
 {

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Routing;
+using Serilog;
 
 namespace Kuntur.API.Common.Infrastructure.Endpoints;
 public static class EndpointExtensions
@@ -15,8 +16,18 @@ public static class EndpointExtensions
 
         foreach (var endpointType in endpointTypes)
         {
-            endpointType.GetMethod(nameof(IEndpoint.Define))!
+            try
+            {
+                endpointType.GetMethod(nameof(IEndpoint.Define))!
                 .Invoke(null, [app]);
+
+                Log.Information("{Module} endpoints configured", endpointType.Assembly.GetName().Name);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed to configure {Module} endpoints", endpointType.Assembly.GetName().Name);
+                continue;
+            }
         }
     }
 

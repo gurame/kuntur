@@ -1,5 +1,3 @@
-global using Asp.Versioning;
-
 global using Carter;
 
 global using MediatR;
