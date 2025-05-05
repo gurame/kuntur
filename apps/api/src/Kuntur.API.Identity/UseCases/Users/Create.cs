@@ -20,6 +20,7 @@ internal class CreateUserCommandHandler(IUserService userService) : ICommandHand
         {
             return result.Errors;
         }
+        
         var userId = result.Value;
         return new CreateUserResponse(userId.Value);
     }

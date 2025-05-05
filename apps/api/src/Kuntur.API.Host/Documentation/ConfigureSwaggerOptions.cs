@@ -10,11 +10,8 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider p) : IConfig
     private readonly IApiVersionDescriptionProvider _provider = p;
     public void Configure(SwaggerGenOptions options)
     {
-        Serilog.Log.Logger.Information("Executing Swagger configuration");
-
         foreach (var description in _provider.ApiVersionDescriptions)
         {
-            Serilog.Log.Logger.Information("Adding Swagger endpoint for version {Version}", description.GroupName);
             options.SwaggerDoc(
                 description.GroupName,
                 new OpenApiInfo

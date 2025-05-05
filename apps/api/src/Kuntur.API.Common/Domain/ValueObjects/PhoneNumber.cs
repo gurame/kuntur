@@ -9,12 +9,12 @@ public sealed class PhoneNumber : ValueObject
     public string Value { get; }
     public CountryCode Country { get; }
 
+    private PhoneNumber() : this(string.Empty, new CountryCode(string.Empty)) {}
     private PhoneNumber(string value, CountryCode country)
     {
         Value = value;
         Country = country;
     }
-
     public static PhoneNumber Parse(string raw)
     {
         raw.Throw().IfEmpty().IfWhiteSpace();

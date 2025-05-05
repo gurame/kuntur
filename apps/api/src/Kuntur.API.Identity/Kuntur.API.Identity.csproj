@@ -8,6 +8,5 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Carter" />
-    <PackageReference Include="FluentValidation" />
   </ItemGroup>
 </Project>

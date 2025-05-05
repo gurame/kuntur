@@ -1,25 +1,28 @@
 using Kuntur.API.Common.Infrastructure.Endpoints;
 
 namespace Kuntur.API.Onboarding.UseCases.Marketplaces;
-public class Endpoint : IEndpoint
+public class CreateEndpoint : IEndpoint
 {
-    public record Request(
+    public record CreateRequest(
         string Name, string TaxId,
         string FirstName, string LastName,
         string PhoneNumber, string EmailAddress, string Password);
-    public record Response(Guid MarketplaceId);
+    public record CreateResponse(Guid MarketplaceId);
     public static void Define(IEndpointRouteBuilder app)
     {
-        app.MapPost(Routes.Create, async (ISender sender, Request request) =>
+        app.MapPost(Routes.Create, async (ISender sender, CreateRequest request) =>
         {
-            var response = await sender.Send(new Command(
+            var cmd = new CreateCommand(
                 request.Name, request.TaxId,
                 request.FirstName, request.LastName,
-                request.PhoneNumber, request.EmailAddress, request.Password));
+                request.EmailAddress, request.PhoneNumber,
+                request.Password);
 
-            return TypedResults.Ok(response);
+            var result = await sender.Send(cmd);
+
+            return result.MapResponse<CreateCommandResult, CreateResponse>();
         })
-        .Produces<Response>(StatusCodes.Status200OK)
+        .Produces<CreateResponse>(StatusCodes.Status200OK)
         .MapToApiVersion(1, 0);
     }
 }

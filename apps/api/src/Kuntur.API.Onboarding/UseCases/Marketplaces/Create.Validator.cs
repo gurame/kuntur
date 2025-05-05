@@ -1,8 +1,8 @@
 namespace Kuntur.API.Onboarding.UseCases.Marketplaces;
 
-internal class CommandValidator : AbstractValidator<Command>
+internal class CreateCommandValidator : AbstractValidator<CreateCommand>
 {
-    public CommandValidator()
+    public CreateCommandValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()

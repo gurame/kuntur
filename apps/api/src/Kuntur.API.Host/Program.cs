@@ -1,5 +1,4 @@
 using Kuntur.API.Host;
-
 using Serilog;
 
 var logger = Log.Logger = new LoggerConfiguration()
@@ -7,16 +6,17 @@ var logger = Log.Logger = new LoggerConfiguration()
   .WriteTo.Console()
   .CreateLogger();
 
-logger.Information("Starting Kuntur API Host");
-
 var builder = WebApplication.CreateBuilder(args);
+{
+  logger.Information("Starting Kuntur API Host");
 
-builder.AddKunturApiServices(logger);
-
-builder.AddKunturModules(logger);
+  builder.AddServices(logger)
+         .AddModules(logger);
+}
 
 var app = builder.Build();
+{
+  app.UseApi();
 
-app.UseKunturApi();
-
-app.Run();
+  app.Run();
+}

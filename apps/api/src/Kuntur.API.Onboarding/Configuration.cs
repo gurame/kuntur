@@ -1,4 +1,3 @@
-using System.Reflection;
 using Kuntur.API.Common;
 using Kuntur.API.Common.Infrastructure.Endpoints;
 using Microsoft.Extensions.Configuration;
@@ -7,19 +6,16 @@ using Serilog;
 
 namespace Kuntur.API.Onboarding;
 
-public class ModuleConfiguration : IModuleConfiguration
+public class Configuration : IModuleConfiguration
 {
-    public static void AddServices(
-        IServiceCollection services, IConfiguration configuration, 
-        ILogger logger, List<Assembly> mediatRAssemblies)
+    public static void AddServices(IServiceCollection services, IConfiguration configuration, ILogger logger)
     {
-        mediatRAssemblies.Add(typeof(ModuleConfiguration).Assembly);
+        // Register services specific to the module here
     }
-
     public void AddRoutes(IEndpointRouteBuilder app)
     {
         const string basePath = "onboarding";
         var group = app.MapGroup(basePath);
-        group.MapEndopints<ModuleConfiguration>();
+        group.MapEndopints<Configuration>();
     }
 }

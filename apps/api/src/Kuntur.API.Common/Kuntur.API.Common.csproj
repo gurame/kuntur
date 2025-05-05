@@ -3,7 +3,9 @@
     <PackageReference Include="Ardalis.Specification" />
     <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" />
     <PackageReference Include="ErrorOr" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     <PackageReference Include="libphonenumber-csharp" />
+    <PackageReference Include="Mapster" />
     <PackageReference Include="MediatR" />
     <PackageReference Include="Carter" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />

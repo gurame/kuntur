@@ -47,10 +47,10 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
                 .HasMaxLength(20);
         });
 
-        builder.Property<AdminId>("_adminId")
+        builder.Property<AdminId?>("_adminId")
             .HasConversion(
-                id => id.Value,
-                value => new AdminId(value))
+                id => id.HasValue ? id.Value.Value : (Guid?)null,
+                value => value.HasValue ? new AdminId(value.Value) : null)
             .HasColumnName(nameof(AdminId))
             .ValueGeneratedNever();
     }
