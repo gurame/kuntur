@@ -6,10 +6,10 @@ var logger = Log.Logger = new LoggerConfiguration()
   .WriteTo.Console()
   .CreateLogger();
 
+logger.Information("Starting Kuntur API Host");
+
 var builder = WebApplication.CreateBuilder(args);
 {
-  logger.Information("Starting Kuntur API Host");
-
   builder.AddServices(logger)
          .AddModules(logger);
 }

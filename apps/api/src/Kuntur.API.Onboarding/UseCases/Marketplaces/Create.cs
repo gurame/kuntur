@@ -1,7 +1,7 @@
 using Kuntur.API.Common.Infrastructure.Endpoints;
 
 namespace Kuntur.API.Onboarding.UseCases.Marketplaces;
-public class CreateEndpoint : IEndpoint
+internal class CreateEndpoint : IEndpoint
 {
     public record CreateRequest(
         string Name, string TaxId,

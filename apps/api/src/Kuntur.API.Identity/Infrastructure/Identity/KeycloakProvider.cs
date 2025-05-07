@@ -5,7 +5,7 @@ namespace Kuntur.API.Identity.Infrastructure.Identity;
 
 internal class KeycloakProvider : IIdentityProvider
 {
-    public Task<ErrorOr<UserId>> CreateUserAsync(string email, string password, CancellationToken cancellationToken)
+    public Task<ErrorOr<UserId>> CreateUserAsync(EmailAddress emailAddress, string password, CancellationToken cancellationToken)
     {
        return Task.FromResult<ErrorOr<UserId>>(new UserId(Guid.NewGuid()));
     }

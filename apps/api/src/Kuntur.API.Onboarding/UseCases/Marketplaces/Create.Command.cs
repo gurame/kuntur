@@ -13,16 +13,26 @@ internal record CreateCommand(
         private readonly ISender _sender = sender;
         public async Task<ErrorOr<CreateCommandResult>> Handle(CreateCommand cmd, CancellationToken ct)
         {
+            // Identity
             var createUserCommand = new CreateUserCommand(
                 cmd.FirstName, cmd.LastName,
                 cmd.EmailAddress, cmd.PhoneNumber,
                 cmd.Password);
-
             var createUserResult = await _sender.Send(createUserCommand, ct);
             if (createUserResult.IsError)
             {
                 return createUserResult.Errors;
             }
+            var userId = createUserResult.Value.UserId;
+
+            var createAdminProfile = new CreateAdminProfileCommand(userId);
+            var createAdminProfileResult = await _sender.Send(createAdminProfile, ct);
+            if (createAdminProfileResult.IsError)
+            {
+                return createAdminProfileResult.Errors;
+            }
+
+            // Marketplace
             
             return new CreateCommandResult(Guid.NewGuid());
         }

@@ -11,8 +11,8 @@ internal interface IUserService
     Task<ErrorOr<UserId>> CreateUserAsync(
         string firstName,
         string lastName,
-        string emailAddress,
-        string phoneNumber,
+        string rawEmailAddress,
+        string rawPhoneNumber,
         string password,
         CancellationToken ct);
 }
@@ -27,9 +27,10 @@ internal class UserService(IIdentityProvider identityProvider,
 
     public async Task<ErrorOr<UserId>> CreateUserAsync(
         string firstName, string lastName,
-        string emailAddress, string phoneNumber,
+        string rawEmailAddress, string rawPhoneNumber,
         string password, CancellationToken ct)
     {
+        var emailAddress = new EmailAddress(rawEmailAddress);
         if (await _repository.AnyAsync(new FindByEmailSpecification(emailAddress), ct))
             return DomainErrors.User.ExistingEmail;
             
@@ -39,8 +40,8 @@ internal class UserService(IIdentityProvider identityProvider,
 
         var user = new User(
             new Name(firstName, lastName), 
-            new EmailAddress(emailAddress), 
-            PhoneNumber.Parse(phoneNumber), 
+            emailAddress, 
+            PhoneNumber.Parse(rawPhoneNumber), 
             identityResult.Value);
 
         try

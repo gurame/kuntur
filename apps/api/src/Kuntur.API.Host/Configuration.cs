@@ -28,7 +28,8 @@ public static class Configuration
     public static WebApplication UseApi(this WebApplication app)
     {
         app.UseExceptionHandler();
-
+        app.UseStatusCodePages();
+        
         app.UseApiVersioning();
 
         app.MapGroup(string.Empty)
