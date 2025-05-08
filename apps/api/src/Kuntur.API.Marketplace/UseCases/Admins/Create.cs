@@ -1,6 +1,5 @@
 using ErrorOr;
 using Kuntur.API.Common.UseCases;
-using Kuntur.API.Identity.Domain.UserAggregate;
 using Kuntur.API.Marketplace.Contracts;
 using Kuntur.API.Marketplace.Domain.AdminAggregate;
 using Kuntur.API.Marketplace.Domain.AdminAggregate.Specifications;

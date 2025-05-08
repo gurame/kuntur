@@ -1,33 +1,43 @@
 ## Main commands
 build:
+	@echo "› Building solution"
 	dotnet build Kuntur.API.sln
 
 watch:
+	@echo "› Watching solution"
 	dotnet watch --project src/Kuntur.API.Host/Kuntur.API.Host.csproj run
 
 run:
+	@echo "› Running solution"
 	dotnet run --project src/Kuntur.API.Host/Kuntur.API.Host.csproj
 
 compose-up:
+	@echo "› Building and running docker containers"
 	find config -type f -exec chmod +x {} \;
 	docker-compose -f docker-compose.yml up -d --build
 
 compose-down:
+	@echo "› Stopping and removing docker containers"
 	docker-compose -f docker-compose.yml down --remove-orphans
 
 ## Database commands
 .PHONY: new-migration zero-migration run-migration run-all-migrations
 
-# Lista de módulos válidos
+# Available modules
 VALID_MODULES := Identity Marketplace
 
-# Función de shell para validar módulo
 define check_module
 case "$$module" in \
   Identity|Marketplace) ;; \
   *) echo "Error: invalid module '$$module'. Allowed: $(VALID_MODULES)"; exit 1;; \
 esac;
 endef
+
+ifeq ($(NO_BUILD),true)
+  NO_BUILD_FLAG := --no-build
+else
+  NO_BUILD_FLAG :=
+endif
 
 new-migration:
 	@module=$(MODULE); \
@@ -76,15 +86,17 @@ run-migration:
 	dotnet ef database update \
 	  --context Kuntur"$$module"DbContext \
 	  --project src/Kuntur.API.$$module/Kuntur.API.$$module.csproj \
-	  --startup-project src/Kuntur.API.Host/Kuntur.API.Host.csproj
+	  --startup-project src/Kuntur.API.Host/Kuntur.API.Host.csproj \
+	  $(NO_BUILD_FLAG);
+	@echo "✓ Migrations applied successfully";
 
 run-all-migrations:
-	@echo "› Applying migrations for all modules"; \
-	for module in $(VALID_MODULES); do \
-	  echo "  - Module: $$module"; \
-	  dotnet ef database update \
-	    --context Kuntur"$$module"DbContext \
-	    --project src/Kuntur.API.$$module/Kuntur.API.$$module.csproj \
-	    --startup-project src/Kuntur.API.Host/Kuntur.API.Host.csproj; \
-	done; \
-	echo "✓ All migrations applied successfully"
+	make build
+	@for module in $(VALID_MODULES); do \
+	  make run-migration MODULE=$$module NO_BUILD=true; \
+	done
+
+zero-migration-all:
+	@for module in $(VALID_MODULES); do \
+	  make zero-migration MODULE=$$module; \
+	done

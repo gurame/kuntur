@@ -1,12 +1,13 @@
 using Kuntur.API.Marketplace.Domain.AdminAggregate;
 using Kuntur.API.Marketplace.Domain.AdminAggregate.ValueObjects;
 using Kuntur.API.Marketplace.Domain.Common.ValueObjects;
+using Kuntur.API.Marketplace.Domain.SubscriptionAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Kuntur.API.Identity.Infrastructure.Persistence.Configurations;
+namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Configurations;
 
-internal class UserConfiguration : IEntityTypeConfiguration<Admin>
+internal class AdminConfiguration : IEntityTypeConfiguration<Admin>
 {
     public void Configure(EntityTypeBuilder<Admin> builder)
     {
@@ -24,6 +25,13 @@ internal class UserConfiguration : IEntityTypeConfiguration<Admin>
                 id => id.Value,
                 value => new UserId(value))
             .HasColumnName(nameof(UserId))
+            .ValueGeneratedNever();
+
+        builder.Property(u => u.SubscriptionId)
+            .HasConversion(
+                id => id.HasValue ? id.Value.Value : (Guid?)null,
+                value => value.HasValue ? new SubscriptionId(value.Value) : null)
+            .HasColumnName(nameof(SubscriptionId))
             .ValueGeneratedNever();
     }
 }

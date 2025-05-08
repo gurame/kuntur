@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(KunturMarketplaceDbContext))]
-    [Migration("20250507234337_Initial")]
+    [Migration("20250508170517_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -32,8 +32,9 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("AdminId");
 
-                    b.Property<Guid>("SubscriptionId")
-                        .HasColumnType("uuid");
+                    b.Property<Guid?>("SubscriptionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("SubscriptionId");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
@@ -42,6 +43,28 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Admin", "Marketplace");
+                });
+
+            modelBuilder.Entity("Kuntur.API.Marketplace.Domain.SubscriptionAggregate.Subscription", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("SubscriptionId");
+
+                    b.Property<int>("SubscriptionType")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("_adminId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("AdminId");
+
+                    b.Property<int>("_maxSellers")
+                        .HasColumnType("integer")
+                        .HasColumnName("MaxSellers");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subscription", "Marketplace");
                 });
 #pragma warning restore 612, 618
         }
