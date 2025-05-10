@@ -1,5 +1,6 @@
 using Kuntur.API.Common.UseCases;
 using Kuntur.API.Identity.Contracts;
+using Kuntur.API.Marketplace.Contracts;
 
 namespace Kuntur.API.Onboarding.UseCases.Marketplaces;
 internal record CreateCommandResult(Guid MarketplaceId);
@@ -31,8 +32,22 @@ internal record CreateCommand(
             {
                 return createAdminProfileResult.Errors;
             }
+            var adminId = createAdminProfileResult.Value.AdminId;
 
             // Marketplace
+            var createAdmin = new CreateAdminCommand(userId, adminId);
+            var createAdminResult = await _sender.Send(createAdmin, ct);
+            if (createAdminResult.IsError)
+            {
+                return createAdminResult.Errors;
+            }
+
+            var createSubscription = new CreateSubscriptionCommand(adminId);
+            var createSubscriptionResult = await _sender.Send(createSubscription, ct);
+            if (createSubscriptionResult.IsError)
+            {
+                return createSubscriptionResult.Errors;
+            }
             
             return new CreateCommandResult(Guid.NewGuid());
         }

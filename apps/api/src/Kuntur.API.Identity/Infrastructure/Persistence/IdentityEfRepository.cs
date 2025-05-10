@@ -3,6 +3,6 @@ using Kuntur.API.Identity.Interfaces;
 
 namespace Kuntur.API.Identity.Infrastructure.Persistence;
 
-internal class IdentityEfRepository<T>(KunturIdentityDbContext dbContext) 
+internal class IdentityEfRepository<T>(KunturDbContext dbContext) 
     : EfRepository<T>(dbContext), IIdentityRepository<T> where T : class, IAggregateRoot;
 

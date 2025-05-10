@@ -11,6 +11,8 @@ internal class AdminConfiguration : IEntityTypeConfiguration<Admin>
 {
     public void Configure(EntityTypeBuilder<Admin> builder)
     {
+        builder.ToTable(nameof(Admin), "marketplace");
+
         builder.HasKey(u => u.Id);
 
         builder.Property(u => u.Id)

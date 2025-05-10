@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Kuntur.API.Identity.Infrastructure.Persistence.Migrations
 {
-    [DbContext(typeof(KunturIdentityDbContext))]
-    [Migration("20250508170514_Initial")]
+    [DbContext(typeof(IdentityDbContext))]
+    [Migration("20250510015332_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -21,7 +21,6 @@ namespace Kuntur.API.Identity.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Identity")
                 .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -78,7 +77,7 @@ namespace Kuntur.API.Identity.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User", "Identity");
+                    b.ToTable("User", "identity");
                 });
 #pragma warning restore 612, 618
         }

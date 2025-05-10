@@ -26,7 +26,6 @@ internal class CreateAdminProfileCommandHandler(IIdentityRepository<User> reposi
         var adminId = result.Value;
 
         await _repository.UpdateAsync(user, ct);
-        await _repository.SaveChangesAsync(ct);
 
         return new CreateAdminProfileResponse(adminId.Value);
     }

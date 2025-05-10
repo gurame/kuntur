@@ -16,7 +16,7 @@ public static class ModuleConfigurationExtensions
     {
 
         // Specific module services configuration
-        var moduleConfigTypes = GetModuleConfigurationTypesFromAllAssemblies(logger);
+        var moduleConfigTypes = GetModuleConfigurationTypesFromAllAssemblies();
         foreach (var moduleConfigType in moduleConfigTypes)
         {
             try
@@ -47,27 +47,9 @@ public static class ModuleConfigurationExtensions
         services.AddValidatorsFromAssemblies(assemblies, includeInternalTypes: true);
     }
 
-    public static IEnumerable<TypeInfo> GetModuleConfigurationTypesFromAllAssemblies(ILogger logger)
+    public static IEnumerable<TypeInfo> GetModuleConfigurationTypesFromAllAssemblies()
     {
-        var entryAssembly = Assembly.GetEntryAssembly()!;
-        var assemblies = new List<Assembly> { entryAssembly };
-        var deps = DependencyContext.Load(entryAssembly)!;
-        var projectLibs = deps.RuntimeLibraries.Where(lib => lib.Type == "project");
-
-        foreach (var lib in projectLibs)
-        {
-            foreach (var name in lib.GetDefaultAssemblyNames(deps))
-            {
-                try
-                {
-                    assemblies.Add(Assembly.Load(name));
-                }
-                catch
-                {
-                    logger.Warning("Failed to load assembly {AssemblyName}", name);
-                }
-            }
-        }
+        var assemblies = AssemblyHelper.ProjectsAssemblies;
 
         List<TypeInfo> moduleConfigurationTypes = [];
         foreach (var assembly in assemblies)

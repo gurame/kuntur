@@ -46,9 +46,9 @@ new-migration:
 	fi; \
 	$(call check_module) \
 	read -p "Enter migration name: " NAME; \
-	echo "› Creatong migration '$$NAME' for module $$module"; \
+	echo "› Creating migration '$$NAME' for module $$module"; \
 	dotnet ef migrations add $$NAME \
-	  --context Kuntur"$$module"DbContext \
+	  --context "$$module"DbContext \
 	  --project src/Kuntur.API.$$module/Kuntur.API.$$module.csproj \
 	  --startup-project src/Kuntur.API.Host/Kuntur.API.Host.csproj \
 	  -o Infrastructure/Persistence/Migrations; \
@@ -70,11 +70,11 @@ zero-migration:
 	fi; \
 	echo "› Creating zero migration 'Initial' for module $$module"; \
 	dotnet ef migrations add Initial \
-	  --context Kuntur"$$module"DbContext \
+	  --context "$$module"DbContext \
 	  --project src/Kuntur.API.$$module/Kuntur.API.$$module.csproj \
 	  --startup-project src/Kuntur.API.Host/Kuntur.API.Host.csproj \
-	  -o "$$MIG_PATH"; \
-	echo "✓ Zero migration created successfully"; \
+	  -o $$MIG_PATH; \
+	echo "✓ Zero migration created successfully";
 
 run-migration:
 	@module=$(MODULE); \
@@ -84,11 +84,11 @@ run-migration:
 	$(call check_module) \
 	echo "› Applying migrations for module $$module"; \
 	dotnet ef database update \
-	  --context Kuntur"$$module"DbContext \
+	  --context "$$module"DbContext \
 	  --project src/Kuntur.API.$$module/Kuntur.API.$$module.csproj \
 	  --startup-project src/Kuntur.API.Host/Kuntur.API.Host.csproj \
-	  $(NO_BUILD_FLAG);
-	@echo "✓ Migrations applied successfully";
+	  $(NO_BUILD_FLAG); \
+	echo "✓ Migrations applied successfully";
 
 run-all-migrations:
 	make build

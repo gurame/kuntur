@@ -17,11 +17,6 @@ public class Configuration : IModuleConfiguration
 {
     public static void AddServices(IServiceCollection services, IConfiguration configuration, ILogger logger)
     {
-        string connectionString = configuration.GetConnectionString("IdentityConnection")!;
-
-        services.AddDbContext<KunturIdentityDbContext>(options =>
-            options.UseNpgsql(connectionString));
-
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IIdentityProvider, KeycloakProvider>();
 

@@ -22,13 +22,12 @@ internal class CreateSubscriptionCommandHandler(IMarketplaceRepository<Admin> re
             return DomainErrors.Admin.NotFound;
         }
 
-        // TODO: By default, the subscription type is Free. Should we allow the user to choose the subscription type in the future
+        // TODO: By default, the subscription type is Free. we should allow the user to choose the subscription type in the future
         var subscriptionType = SubscriptionType.Free;
         var subscription = new Subscription(subscriptionType, adminId);
         admin.SetSubscription(subscription);
 
         await _repository.UpdateAsync(admin, ct);
-        await _repository.SaveChangesAsync(ct);
 
         return new CreateSubscriptionResponse(subscription.Id.Value);
     }

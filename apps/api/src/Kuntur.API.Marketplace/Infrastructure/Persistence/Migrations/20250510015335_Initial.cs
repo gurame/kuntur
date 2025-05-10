@@ -12,11 +12,11 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "Marketplace");
+                name: "marketplace");
 
             migrationBuilder.CreateTable(
                 name: "Admin",
-                schema: "Marketplace",
+                schema: "marketplace",
                 columns: table => new
                 {
                     AdminId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -30,7 +30,7 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Subscription",
-                schema: "Marketplace",
+                schema: "marketplace",
                 columns: table => new
                 {
                     SubscriptionId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -49,11 +49,11 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Admin",
-                schema: "Marketplace");
+                schema: "marketplace");
 
             migrationBuilder.DropTable(
                 name: "Subscription",
-                schema: "Marketplace");
+                schema: "marketplace");
         }
     }
 }

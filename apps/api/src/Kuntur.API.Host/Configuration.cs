@@ -1,5 +1,7 @@
 using Carter;
 using Kuntur.API.Common;
+using Kuntur.API.Common.Infrastructure;
+using Kuntur.API.Common.Infrastructure.Persistence;
 using Kuntur.API.Host.Documentation;
 using Kuntur.API.Host.Logging;
 using Kuntur.API.Host.Versioning;
@@ -21,6 +23,8 @@ public static class Configuration
 
         builder.AddApiVersioning();
 
+        builder.AddPersistence();
+
         logger.Information("{Module} services configured", "Kuntur.API.Host");
 
         return builder;
@@ -28,6 +32,7 @@ public static class Configuration
     public static WebApplication UseApi(this WebApplication app)
     {
         app.UseExceptionHandler();
+        app.UseTransactionalConsistency();
         app.UseStatusCodePages();
         
         app.UseApiVersioning();

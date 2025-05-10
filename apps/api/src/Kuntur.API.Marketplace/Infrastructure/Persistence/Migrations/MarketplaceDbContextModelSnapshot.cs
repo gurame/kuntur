@@ -10,14 +10,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
 {
-    [DbContext(typeof(KunturMarketplaceDbContext))]
-    partial class KunturMarketplaceDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MarketplaceDbContext))]
+    partial class MarketplaceDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Marketplace")
                 .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -39,7 +38,7 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Admin", "Marketplace");
+                    b.ToTable("Admin", "marketplace");
                 });
 
             modelBuilder.Entity("Kuntur.API.Marketplace.Domain.SubscriptionAggregate.Subscription", b =>
@@ -61,7 +60,7 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subscription", "Marketplace");
+                    b.ToTable("Subscription", "marketplace");
                 });
 #pragma warning restore 612, 618
         }

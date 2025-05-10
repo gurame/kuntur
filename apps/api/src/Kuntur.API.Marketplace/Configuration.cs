@@ -15,11 +15,6 @@ public class Configuration : IModuleConfiguration
 {
     public static void AddServices(IServiceCollection services, IConfiguration configuration, ILogger logger)
     {
-        string connectionString = configuration.GetConnectionString("MarketplaceConnection")!;
-
-        services.AddDbContext<KunturMarketplaceDbContext>(options =>
-            options.UseNpgsql(connectionString));
-
         services.AddScoped(typeof(IMarketplaceRepository<>), typeof(MarketplaceEfRepository<>));
     }
 

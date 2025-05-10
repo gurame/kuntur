@@ -47,7 +47,6 @@ internal class UserService(IIdentityProvider identityProvider,
         try
         {
             await _repository.AddAsync(user, ct);
-            await _repository.SaveChangesAsync(ct);
         }
         catch (Exception ex)
         {

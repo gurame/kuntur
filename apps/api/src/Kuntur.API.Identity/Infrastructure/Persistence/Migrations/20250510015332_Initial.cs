@@ -12,11 +12,11 @@ namespace Kuntur.API.Identity.Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "Identity");
+                name: "identity");
 
             migrationBuilder.CreateTable(
                 name: "User",
-                schema: "Identity",
+                schema: "identity",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -37,7 +37,7 @@ namespace Kuntur.API.Identity.Infrastructure.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "User",
-                schema: "Identity");
+                schema: "identity");
         }
     }
 }

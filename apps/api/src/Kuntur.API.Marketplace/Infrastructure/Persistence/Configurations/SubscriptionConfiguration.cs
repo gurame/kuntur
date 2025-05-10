@@ -12,6 +12,8 @@ internal class SubscriptionConfiguration : IEntityTypeConfiguration<Subscription
 {
     public void Configure(EntityTypeBuilder<Subscription> builder)
     {
+        builder.ToTable(nameof(Subscription), "marketplace");
+
         builder.HasKey(u => u.Id);
 
         builder.Property(u => u.Id)

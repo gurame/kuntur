@@ -10,7 +10,7 @@ public class EventualConsistencyMiddleware(RequestDelegate next)
 {
     private readonly RequestDelegate _next = next;
 
-    public async Task InvokeAsync(HttpContext context, IPublisher publisher, BaseDbContext dbContext)
+    public async Task InvokeAsync(HttpContext context, IPublisher publisher, KunturDbContext dbContext)
     {
         var transaction = await dbContext.Database.BeginTransactionAsync();
         context.Response.OnCompleted(async () =>

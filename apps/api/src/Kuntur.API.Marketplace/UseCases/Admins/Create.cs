@@ -23,7 +23,6 @@ internal class CreateAdminProfileCommandHandler(IMarketplaceRepository<Admin> re
         
         var admin = new Admin(new AdminId(request.AdminId), userId);
         await _repository.AddAsync(admin, ct);
-        await _repository.SaveChangesAsync(ct);
 
         return new CreateAdminResponse(admin.Id.Value);
     }
