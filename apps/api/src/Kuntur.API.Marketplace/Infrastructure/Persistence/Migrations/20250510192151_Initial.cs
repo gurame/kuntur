@@ -29,6 +29,22 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Marketplace",
+                schema: "marketplace",
+                columns: table => new
+                {
+                    MarketplaceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MaxSellers = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    SubscriptionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TaxId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Marketplace", x => x.MarketplaceId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Subscription",
                 schema: "marketplace",
                 columns: table => new
@@ -49,6 +65,10 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Admin",
+                schema: "marketplace");
+
+            migrationBuilder.DropTable(
+                name: "Marketplace",
                 schema: "marketplace");
 
             migrationBuilder.DropTable(

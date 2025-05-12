@@ -14,7 +14,7 @@ internal record CreateCommand(
         private readonly ISender _sender = sender;
         public async Task<ErrorOr<CreateCommandResult>> Handle(CreateCommand cmd, CancellationToken ct)
         {
-            // Identity
+            // Identity module
             var createUserCommand = new CreateUserCommand(
                 cmd.FirstName, cmd.LastName,
                 cmd.EmailAddress, cmd.PhoneNumber,
@@ -34,7 +34,7 @@ internal record CreateCommand(
             }
             var adminId = createAdminProfileResult.Value.AdminId;
 
-            // Marketplace
+            // Marketplace module
             var createAdmin = new CreateAdminCommand(userId, adminId);
             var createAdminResult = await _sender.Send(createAdmin, ct);
             if (createAdminResult.IsError)
@@ -48,8 +48,16 @@ internal record CreateCommand(
             {
                 return createSubscriptionResult.Errors;
             }
+            var subscriptionId = createSubscriptionResult.Value.SubscriptionId;
             
-            return new CreateCommandResult(Guid.NewGuid());
+            var createMarketplace = new CreateMarketplaceCommand(subscriptionId, cmd.TaxId, cmd.Name);
+            var createMarketplaceResult = await _sender.Send(createMarketplace, ct);
+            if (createMarketplaceResult.IsError)
+            {
+                return createMarketplaceResult.Errors;
+            }
+            
+            return new CreateCommandResult(createMarketplaceResult.Value.MarketplaceId);
         }
     }
 }

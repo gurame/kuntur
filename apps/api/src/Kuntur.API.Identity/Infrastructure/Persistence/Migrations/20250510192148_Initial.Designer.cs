@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kuntur.API.Identity.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20250510015332_Initial")]
+    [Migration("20250510192148_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

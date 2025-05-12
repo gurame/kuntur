@@ -15,17 +15,26 @@ public class EventualConsistencyMiddleware(RequestDelegate next)
         var transaction = await dbContext.Database.BeginTransactionAsync();
         context.Response.OnCompleted(async () =>
         {
+            bool success = context.Response.StatusCode < 400;
             try
             {
-                if (context.Items.TryGetValue(Constants.DomainEventsKey, out var value) && value is Queue<IDomainEvent> domainEvents)
+                if (success)
                 {
-                    while (domainEvents.TryDequeue(out var nextEvent))
+                    if (context.Items.TryGetValue(Constants.DomainEventsKey, out var value) &&
+                        value is Queue<IDomainEvent> domainEvents)
                     {
-                        await publisher.Publish(nextEvent);
+                        while (domainEvents.TryDequeue(out var nextEvent))
+                        {
+                            await publisher.Publish(nextEvent);
+                        }
                     }
-                }
 
-                await transaction.CommitAsync();
+                    await transaction.CommitAsync();
+                }
+                else
+                {
+                    await transaction.RollbackAsync();
+                }
             }
             catch (EventualConsistencyException)
             {
@@ -35,7 +44,6 @@ public class EventualConsistencyMiddleware(RequestDelegate next)
                 await transaction.DisposeAsync();
             }
         });
-
         await _next(context);
     }
 }

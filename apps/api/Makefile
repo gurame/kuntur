@@ -1,3 +1,11 @@
+## .PHONY: clean-up up build watch run compose-up compose-down compose-delete new-migration zero-migration run-migration run-all-migrations zero-migration-all
+## Quick commands
+clean-up:
+	make compose-delete && make up
+
+up:
+	make compose-up && make run-all-migrations && make run
+
 ## Main commands
 build:
 	@echo "› Building solution"
@@ -16,9 +24,13 @@ compose-up:
 	find config -type f -exec chmod +x {} \;
 	docker-compose -f docker-compose.yml up -d --build
 
-compose-down:
+compose-down: 
 	@echo "› Stopping and removing docker containers"
 	docker-compose -f docker-compose.yml down --remove-orphans
+
+compose-delete:
+	@echo "› Stopping, removing docker containers and volumes"
+	docker-compose -f docker-compose.yml down --remove-orphans -v
 
 ## Database commands
 .PHONY: new-migration zero-migration run-migration run-all-migrations

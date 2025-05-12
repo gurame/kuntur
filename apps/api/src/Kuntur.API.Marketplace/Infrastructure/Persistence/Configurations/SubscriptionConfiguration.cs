@@ -26,8 +26,12 @@ internal class SubscriptionConfiguration : IEntityTypeConfiguration<Subscription
         builder.Property("_maxSellers")
             .HasColumnName("MaxSellers");
 
-        builder.Property("_adminId")
-            .HasColumnName("AdminId");
+        builder.Property<AdminId>("_adminId")
+            .HasConversion(
+                id => id.Value,
+                value => new AdminId(value))
+            .HasColumnName(nameof(AdminId))
+            .ValueGeneratedNever();
 
         builder.Property(s => s.SubscriptionType)
             .HasConversion(

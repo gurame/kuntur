@@ -18,7 +18,7 @@ internal class CreateAdminProfileCommandHandler(IMarketplaceRepository<Admin> re
         var userId = new UserId(request.UserId);
         if (await _repository.AnyAsync(new FindByUserIdSpecification(userId), ct))
         {
-            return DomainErrors.Admin.AlreadyExists;
+            return AdminErrors.AlreadyExists;
         }
         
         var admin = new Admin(new AdminId(request.AdminId), userId);

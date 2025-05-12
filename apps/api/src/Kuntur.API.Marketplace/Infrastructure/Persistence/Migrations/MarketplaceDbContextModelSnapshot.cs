@@ -41,6 +41,35 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                     b.ToTable("Admin", "marketplace");
                 });
 
+            modelBuilder.Entity("Kuntur.API.Marketplace.Domain.MarketplaceAggregate.MarketplaceAgg", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("MarketplaceId");
+
+                    b.Property<int>("_maxSellers")
+                        .HasColumnType("integer")
+                        .HasColumnName("MaxSellers");
+
+                    b.Property<string>("_name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("Name");
+
+                    b.Property<Guid>("_subscriptionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("SubscriptionId");
+
+                    b.Property<string>("_taxId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("TaxId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Marketplace", "marketplace");
+                });
+
             modelBuilder.Entity("Kuntur.API.Marketplace.Domain.SubscriptionAggregate.Subscription", b =>
                 {
                     b.Property<Guid>("Id")

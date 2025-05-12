@@ -1,10 +1,9 @@
+using ErrorOr;
 using Kuntur.API.Common.Domain;
-using Kuntur.API.Marketplace.Domain.AdminAggregate.Events;
 using Kuntur.API.Marketplace.Domain.AdminAggregate.ValueObjects;
 using Kuntur.API.Marketplace.Domain.Common.ValueObjects;
 using Kuntur.API.Marketplace.Domain.SubscriptionAggregate;
 using Kuntur.API.Marketplace.Domain.SubscriptionAggregate.ValueObjects;
-using Throw;
 
 namespace Kuntur.API.Marketplace.Domain.AdminAggregate;
 
@@ -18,13 +17,14 @@ internal class Admin : AggregateRoot<AdminId>
     {
         UserId = userId;
     }
-
-    public void SetSubscription(Subscription subscription)
+    public ErrorOr<Success> SetSubscription(Subscription subscription)
     {
-        SubscriptionId.HasValue.Throw().IfTrue();
+        if (SubscriptionId is not null)
+        {
+            return AdminErrors.AlreadyHasSubscriptionSet;
+        }
 
         SubscriptionId = subscription.Id;
-
-        _domainEvents.Add(new SubscriptionSetEvent(this, subscription));
+        return Result.Success;
     }
 }

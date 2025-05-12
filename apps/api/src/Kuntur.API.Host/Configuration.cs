@@ -34,8 +34,17 @@ public static class Configuration
         app.UseExceptionHandler();
         app.UseTransactionalConsistency();
         app.UseStatusCodePages();
-        
+
         app.UseApiVersioning();
+
+        app.MapGet("/", () => Results.Content(
+            """
+            <h1>Kuntur API is running</h1>
+            <p>Visit <a href="/docs">/docs</a> for documentation.</p>
+            """,
+            "text/html"
+        ))
+        .ExcludeFromDescription();
 
         app.MapGroup(string.Empty)
             .WithApiVersionSet(ApiVersioning.VersionSet)
