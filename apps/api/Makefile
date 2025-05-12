@@ -1,4 +1,5 @@
-## .PHONY: clean-up up build watch run compose-up compose-down compose-delete new-migration zero-migration run-migration run-all-migrations zero-migration-all
+.PHONY: clean-up up build watch run compose-up compose-down compose-delete new-migration zero-migration run-migration run-all-migrations zero-migration-all
+
 ## Quick commands
 clean-up:
 	make compose-delete && make up
@@ -33,9 +34,6 @@ compose-delete:
 	docker-compose -f docker-compose.yml down --remove-orphans -v
 
 ## Database commands
-.PHONY: new-migration zero-migration run-migration run-all-migrations
-
-# Available modules
 VALID_MODULES := Identity Marketplace
 
 define check_module

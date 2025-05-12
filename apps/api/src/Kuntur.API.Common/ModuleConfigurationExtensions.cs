@@ -47,7 +47,7 @@ public static class ModuleConfigurationExtensions
         services.AddValidatorsFromAssemblies(assemblies, includeInternalTypes: true);
     }
 
-    public static IEnumerable<TypeInfo> GetModuleConfigurationTypesFromAllAssemblies()
+    private static List<TypeInfo> GetModuleConfigurationTypesFromAllAssemblies()
     {
         var assemblies = AssemblyHelper.ProjectsAssemblies;
 
