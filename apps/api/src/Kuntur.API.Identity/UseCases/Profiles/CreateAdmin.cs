@@ -1,31 +1,27 @@
 using Kuntur.API.Identity.Contracts;
-using Kuntur.API.Identity.Domain.UserAggregate;
+using Kuntur.API.Identity.Domain.Services;
 using Kuntur.API.Identity.Domain.UserAggregate.ValueObjects;
-using Kuntur.API.Identity.Interfaces;
 
 namespace Kuntur.API.Identity.UseCases.Profiles;
 
-internal class CreateAdminProfileCommandHandler(IIdentityRepository<User> repository) :
+internal class CreateAdminProfileCommandHandler(IUserService userService) :
     ICommandHandler<CreateAdminProfileCommand, ErrorOr<CreateAdminProfileResponse>>
 {
-    private readonly IIdentityRepository<User> _repository = repository;
-    public async Task<ErrorOr<CreateAdminProfileResponse>> Handle(CreateAdminProfileCommand request, CancellationToken ct)
+    private readonly IUserService _userService = userService;
+    public async Task<ErrorOr<CreateAdminProfileResponse>> Handle(CreateAdminProfileCommand cmd, CancellationToken ct)
     {
-        var userId = new UserId(request.UserId);
-        var user = await _repository.GetByIdAsync(userId, ct);
-        if (user is null)
-        {
-            return DomainErrors.User.NotFound;
-        }
+        var userId = new UserId(cmd.UserId);
+        var result = await _userService.MapRoleAsync(
+            userId: userId,
+            roles: Roles.From(RoleConstants.MarketplaceAdmin.Name),
+            ct);
 
-        var result = user.CreateAdminProfile();
         if (result.IsError)
         {
             return result.Errors;
         }
-        var adminId = result.Value;
 
-        await _repository.UpdateAsync(user, ct);
+        var adminId = result.Value;
 
         return new CreateAdminProfileResponse(adminId.Value);
     }

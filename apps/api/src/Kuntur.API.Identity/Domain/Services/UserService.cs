@@ -13,11 +13,16 @@ internal interface IUserService
         string lastName,
         string rawEmailAddress,
         string rawPhoneNumber,
-        string password,
+        string rawPassword,
+        CancellationToken ct);
+
+    Task<ErrorOr<AdminId>> MapRoleAsync(
+        UserId userId,
+        Roles roles,
         CancellationToken ct);
 }
 
-internal class UserService(IIdentityProvider identityProvider, 
+internal class UserService(IIdentityProvider identityProvider,
     IIdentityRepository<User> repository,
     ILogger<UserService> logger) : IUserService
 {
@@ -28,21 +33,23 @@ internal class UserService(IIdentityProvider identityProvider,
     public async Task<ErrorOr<UserId>> CreateUserAsync(
         string firstName, string lastName,
         string rawEmailAddress, string rawPhoneNumber,
-        string password, CancellationToken ct)
+        string rawPassword,
+        CancellationToken ct)
     {
         var emailAddress = new EmailAddress(rawEmailAddress);
         if (await _repository.AnyAsync(new FindByEmailSpecification(emailAddress), ct))
             return DomainErrors.User.ExistingEmail;
-            
+
+        var password = Password.FromPlainText(rawPassword);
         var identityResult = await _identityProvider.CreateUserAsync(emailAddress, password, ct);
         if (identityResult.IsError)
             return identityResult.Errors;
 
         var user = new User(
-            new Name(firstName, lastName), 
-            emailAddress, 
-            PhoneNumber.Parse(rawPhoneNumber), 
-            identityResult.Value);
+            name: new Name(firstName, lastName),
+            emailAddress: emailAddress,
+            phoneNumber: PhoneNumber.Parse(rawPhoneNumber),
+            id: identityResult.Value);
 
         try
         {
@@ -56,5 +63,34 @@ internal class UserService(IIdentityProvider identityProvider,
         }
 
         return user.Id;
+    }
+
+    public async Task<ErrorOr<AdminId>> MapRoleAsync(
+        UserId userId,
+        Roles roles,
+        CancellationToken ct)
+    {
+        var user = await _repository.GetByIdAsync(userId, ct);
+        if (user is null)
+        {
+            return DomainErrors.User.NotFound;
+        }
+
+        var result = user.CreateAdminProfile();
+        if (result.IsError)
+        {
+            return result.Errors;
+        }
+        var adminId = result.Value;
+
+        await _repository.UpdateAsync(user, ct);
+
+        var identityResult = await _identityProvider.MapRoleToUserAsync(userId, roles, ct);
+        if (identityResult.IsError)
+        {
+            return identityResult.Errors;
+        }
+
+        return adminId;
     }
 }

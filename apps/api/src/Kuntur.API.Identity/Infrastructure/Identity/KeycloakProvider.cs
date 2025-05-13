@@ -8,7 +8,10 @@ internal class KeycloakProvider(HttpClient httpClient) : IIdentityProvider
 {
     private readonly string realm = "kuntur";
     private readonly HttpClient _httpClient = httpClient;
-    public async Task<ErrorOr<UserId>> CreateUserAsync(EmailAddress emailAddress, string password, CancellationToken ct)
+    public async Task<ErrorOr<UserId>> CreateUserAsync(
+        EmailAddress emailAddress,
+        Password password,
+        CancellationToken ct)
     {
         var response = await _httpClient.PostAsJsonAsync($"/admin/realms/{realm}/users", new
         {
@@ -21,7 +24,7 @@ internal class KeycloakProvider(HttpClient httpClient) : IIdentityProvider
                 new
                 {
                     type = "password",
-                    value = password,
+                    value = password.Value,
                     temporary = false
                 }
             }
@@ -38,10 +41,29 @@ internal class KeycloakProvider(HttpClient httpClient) : IIdentityProvider
         {
             return Error.Failure("IdentityProvider.CreateUser", "Failed to deserialize user response");
         }
-        
+
         return new UserId(user.Id);
     }
 
+    public async Task<ErrorOr<Success>> MapRoleToUserAsync(UserId userId, Roles roles, CancellationToken ct)
+    {
+        var payload = roles.Values.Select(role => new
+        {
+            id = role.Id,
+            name = role.Name
+        }).ToList();
+
+        var response = await _httpClient.PostAsJsonAsync($"/admin/realms/{realm}/users/{userId.Value}/role-mappings/realm", 
+            payload, cancellationToken: ct);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var error = await response.Content.ReadAsStringAsync(ct);
+            return Error.Failure("IdentityProvider.MapRoleToUser", error);
+        }
+
+        return Result.Success;
+    }
     public async Task<ErrorOr<Success>> DeleteUserAsync(UserId userId, CancellationToken ct)
     {
         var response = await _httpClient.DeleteAsync($"/admin/realms/{realm}/users/{userId.Value}", ct);
