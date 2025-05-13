@@ -5,7 +5,7 @@ using MediatR;
 
 using Microsoft.AspNetCore.Http;
 
-namespace Kuntur.API.Common.Infrastructure.Middlewares;
+namespace Kuntur.API.Common.Infrastructure.Consistency;
 public class EventualConsistencyMiddleware(RequestDelegate next)
 {
     private readonly RequestDelegate _next = next;

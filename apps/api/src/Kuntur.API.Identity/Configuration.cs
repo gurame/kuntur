@@ -1,12 +1,9 @@
 using Kuntur.API.Common;
 using Kuntur.API.Common.Infrastructure.Endpoints;
-using Kuntur.API.Identity.Domain.Services;
-using Kuntur.API.Identity.Infrastructure.Identity;
-using Kuntur.API.Identity.Infrastructure.Persistence;
-using Kuntur.API.Identity.Interfaces;
+using Kuntur.API.Identity.Domain;
+using Kuntur.API.Identity.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -17,10 +14,8 @@ public class Configuration : IModuleConfiguration
 {
     public static void AddServices(IServiceCollection services, IConfiguration configuration, ILogger logger)
     {
-        services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IIdentityProvider, KeycloakProvider>();
-
-        services.AddScoped(typeof(IIdentityRepository<>), typeof(IdentityEfRepository<>));
+        services.AddDomain();
+        services.AddInfrastructure(configuration);
     }
 
     public void AddRoutes(IEndpointRouteBuilder app)
