@@ -43,6 +43,7 @@ internal class Subscription : AggregateRoot<SubscriptionId>
         nameof(SubscriptionType.Free) => 1,
         nameof(SubscriptionType.Starter) => 5,
         nameof(SubscriptionType.Pro) => 20,
+        nameof(SubscriptionType.PayAsYouGo) => -1,
         _ => throw new InvalidOperationException()
     };
 }

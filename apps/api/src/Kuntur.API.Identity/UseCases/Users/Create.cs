@@ -1,19 +1,18 @@
 using Kuntur.API.Identity.Contracts;
-using Kuntur.API.Identity.Domain.Services;
+using Kuntur.API.Identity.Domain.UserAggregate.ValueObjects;
+using Kuntur.API.Identity.Interfaces;
 
 namespace Kuntur.API.Identity.UseCases.Users;
 
-internal class CreateUserCommandHandler(IUserService userService) : ICommandHandler<CreateUserCommand, ErrorOr<CreateUserResponse>>
+internal class CreateUserCommandHandler(IIdentityProvider provider) : ICommandHandler<CreateUserCommand, ErrorOr<CreateUserResponse>>
 {
-    private readonly IUserService _userService = userService;
+    private readonly IIdentityProvider _provider = provider;
     public async Task<ErrorOr<CreateUserResponse>> Handle(CreateUserCommand cmd, CancellationToken ct)
     {
-        var result = await _userService.CreateUserAsync(
-            cmd.FirstName,
-            cmd.LastName,
-            cmd.EmailAddress,
-            cmd.PhoneNumber,
-            cmd.Password,
+        var result = await _provider.CreateUserAsync(
+            name: new Name(cmd.FirstName, cmd.LastName),
+            emailAddress: new EmailAddress(cmd.EmailAddress),
+            password: Password.FromPlainText(cmd.Password),
             ct);
 
         if (result.IsError)

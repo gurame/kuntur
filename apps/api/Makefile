@@ -34,11 +34,11 @@ compose-delete:
 	docker-compose -f docker-compose.yml down --remove-orphans -v
 
 ## Database commands
-VALID_MODULES := Identity Marketplace
+VALID_MODULES := Marketplace
 
 define check_module
 case "$$module" in \
-  Identity|Marketplace) ;; \
+  Marketplace) ;; \
   *) echo "Error: invalid module '$$module'. Allowed: $(VALID_MODULES)"; exit 1;; \
 esac;
 endef

@@ -59,24 +59,6 @@
         "attributes": {}
       },
       {
-        "id": "941ff82c-c958-4007-b5f5-7893fe189664",
-        "name": "buyer",
-        "description": "",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "7e5b535a-84bc-4167-b5a6-25f47be2141d",
-        "attributes": {}
-      },
-      {
-        "id": "597bea85-5b44-4fcb-8ee7-ad3207d43a58",
-        "name": "marketplace-admin",
-        "description": "",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "7e5b535a-84bc-4167-b5a6-25f47be2141d",
-        "attributes": {}
-      },
-      {
         "id": "e17e1731-4a85-4f09-b102-e4af27318ba0",
         "name": "default-roles-kuntur",
         "description": "${role_default-roles}",
@@ -93,15 +75,6 @@
             ]
           }
         },
-        "clientRole": false,
-        "containerId": "7e5b535a-84bc-4167-b5a6-25f47be2141d",
-        "attributes": {}
-      },
-      {
-        "id": "01201993-4b2f-4ea7-9412-f739ca27c2ca",
-        "name": "seller-admin",
-        "description": "",
-        "composite": false,
         "clientRole": false,
         "containerId": "7e5b535a-84bc-4167-b5a6-25f47be2141d",
         "attributes": {}
@@ -199,12 +172,12 @@
                 "view-realm",
                 "create-client",
                 "view-identity-providers",
-                "manage-realm",
                 "manage-events",
+                "manage-realm",
                 "manage-clients",
                 "manage-identity-providers",
-                "view-events",
                 "query-groups",
+                "view-events",
                 "view-authorization"
               ]
             }
@@ -503,6 +476,7 @@
       ],
       "clientRoles": {
         "realm-management": [
+          "realm-admin",
           "manage-users"
         ]
       },
@@ -1350,8 +1324,8 @@
           "consentRequired": false,
           "config": {
             "id.token.claim": "true",
-            "introspection.token.claim": "true",
             "access.token.claim": "true",
+            "introspection.token.claim": "true",
             "userinfo.token.claim": "true"
           }
         }
@@ -1459,8 +1433,8 @@
           "protocolMapper": "oidc-allowed-origins-mapper",
           "consentRequired": false,
           "config": {
-            "introspection.token.claim": "true",
-            "access.token.claim": "true"
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
           }
         }
       ]
@@ -1627,14 +1601,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-sha256-pairwise-sub-mapper",
             "oidc-full-name-mapper",
-            "oidc-usermodel-attribute-mapper",
-            "saml-user-property-mapper",
             "oidc-address-mapper",
             "saml-role-list-mapper",
+            "saml-user-attribute-mapper",
             "oidc-usermodel-property-mapper",
-            "saml-user-attribute-mapper"
+            "oidc-usermodel-attribute-mapper",
+            "saml-user-property-mapper",
+            "oidc-sha256-pairwise-sub-mapper"
           ]
         }
       },
@@ -1656,12 +1630,12 @@
           "allowed-protocol-mapper-types": [
             "oidc-full-name-mapper",
             "oidc-address-mapper",
+            "oidc-usermodel-property-mapper",
+            "saml-user-property-mapper",
+            "oidc-usermodel-attribute-mapper",
             "saml-user-attribute-mapper",
             "saml-role-list-mapper",
-            "oidc-usermodel-property-mapper",
-            "oidc-sha256-pairwise-sub-mapper",
-            "oidc-usermodel-attribute-mapper",
-            "saml-user-property-mapper"
+            "oidc-sha256-pairwise-sub-mapper"
           ]
         }
       },

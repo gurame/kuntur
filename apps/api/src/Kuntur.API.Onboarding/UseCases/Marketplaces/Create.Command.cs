@@ -14,9 +14,7 @@ internal record CreateCommand(
         private readonly ISender _sender = sender;
         public async Task<ErrorOr<CreateCommandResult>> Handle(CreateCommand cmd, CancellationToken ct)
         {
-            //## Identity module
-
-            // Create user
+            // [IDENTITY] Create user
             var createUserCommand = new CreateUserCommand(
                 cmd.FirstName, cmd.LastName,
                 cmd.EmailAddress, cmd.PhoneNumber,
@@ -29,27 +27,16 @@ internal record CreateCommand(
             }
             var userId = createUserResult.Value.UserId;
 
-            // Create admin profile
-            var createAdminProfile = new CreateAdminProfileCommand(userId);
-            
-            var createAdminProfileResult = await _sender.Send(createAdminProfile, ct);
-            if (createAdminProfileResult.IsError)
-            {
-                return createAdminProfileResult.Errors;
-            }
-            var adminId = createAdminProfileResult.Value.AdminId;
-
-            //## Marketplace module
-
-            // Create admin
-            var createAdmin = new CreateAdminCommand(userId, adminId);
+            // [MARKETPLACE] Create admin
+            var createAdmin = new CreateAdminCommand(userId);
             var createAdminResult = await _sender.Send(createAdmin, ct);
             if (createAdminResult.IsError)
             {
                 return createAdminResult.Errors;
             }
+            var adminId = createAdminResult.Value.AdminId;
 
-            // Create subscription
+            // [MARKETPLACE] Create subscription
             var createSubscription = new CreateSubscriptionCommand(adminId);
             var createSubscriptionResult = await _sender.Send(createSubscription, ct);
             if (createSubscriptionResult.IsError)
@@ -58,8 +45,25 @@ internal record CreateCommand(
             }
             var subscriptionId = createSubscriptionResult.Value.SubscriptionId;
             
-            // Create marketplace
-            var createMarketplace = new CreateMarketplaceCommand(subscriptionId, cmd.TaxId, cmd.Name);
+            // [IDENTITY] Create organization
+            var createOrganization = new CreateOrganizationCommand(cmd.Name);
+            var createOrganizationResult = await _sender.Send(createOrganization, ct);
+            if (createOrganizationResult.IsError)
+            {
+                return createOrganizationResult.Errors;
+            }
+            var organizationId = createOrganizationResult.Value.OrganizationId;
+
+            // [IDENTITY] Add member to organization
+            var addMemberToOrganization = new AddMemberToOrganizationCommand(organizationId, userId);
+            var addMemberToOrganizationResult = await _sender.Send(addMemberToOrganization, ct);
+            if (addMemberToOrganizationResult.IsError)
+            {
+                return addMemberToOrganizationResult.Errors;
+            }
+
+            // [MARKETPLACE] Create marketplace
+            var createMarketplace = new CreateMarketplaceCommand(organizationId, subscriptionId, cmd.TaxId, cmd.Name);
             var createMarketplaceResult = await _sender.Send(createMarketplace, ct);
             if (createMarketplaceResult.IsError)
             {

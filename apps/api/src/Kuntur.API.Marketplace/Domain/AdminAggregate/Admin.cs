@@ -13,7 +13,7 @@ internal class Admin : AggregateRoot<AdminId>
     public SubscriptionId? SubscriptionId { get; private set; }
 
     private Admin() : base(default!) { }
-    public Admin(AdminId adminId, UserId userId) : base(adminId)
+    public Admin(UserId userId, AdminId? id = null) : base(id ?? new AdminId(Guid.NewGuid()))
     {
         UserId = userId;
     }
