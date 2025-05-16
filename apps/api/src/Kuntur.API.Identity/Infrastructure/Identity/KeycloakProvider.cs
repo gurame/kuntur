@@ -62,7 +62,7 @@ internal class KeycloakProvider(HttpClient httpClient) : IIdentityProvider
 
     public async Task<ErrorOr<OrganizationId>> CreateOrganizationAsync(string name, CancellationToken ct)
     {
-        var response = await _httpClient.PostAsJsonAsync($"/admin/realms/{realm}/organizations", new
+        var response = await _httpClient.PostAsJsonAsync($"/realms/{realm}/orgs", new
         {
             name = name,
             domains = new string[] { name },
@@ -85,11 +85,7 @@ internal class KeycloakProvider(HttpClient httpClient) : IIdentityProvider
 
     public async Task<ErrorOr<Success>> AddMemberToOrganizationAsync(OrganizationId organizationId, UserId userId, CancellationToken ct)
     {
-        var response = await _httpClient.PostAsJsonAsync($"/admin/realms/{realm}/organizations/{organizationId.Value}/members", new
-        {
-            userId = userId.Value,
-            membershipType = "admin"
-        }, ct);
+        var response = await _httpClient.PutAsJsonAsync($"/realms/{realm}/orgs/{organizationId.Value}/members/{userId.Value}", new { }, ct);
 
         if (!response.IsSuccessStatusCode)
         {

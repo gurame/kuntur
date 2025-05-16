@@ -22,9 +22,17 @@ services:
 
   keycloak:
     platform: linux/amd64
-    image: quay.io/keycloak/keycloak:26.2.0
+    image: quay.io/phasetwo/phasetwo-keycloak:26.2.3
     container_name: keycloak
-    command: start-dev --import-realm
+    command:
+      - start-dev
+      - --features
+      - organization
+      - --import-realm
+      - --spi-email-template-provider=freemarker-plus-mustache 
+      - --spi-email-template-freemarker-plus-mustache-enabled=true 
+      - --spi-theme-cache-themes=false
+
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -34,6 +42,7 @@ services:
       KC_DB_USERNAME: postgres
       KC_DB_PASSWORD: postgres
       KC_LOG_LEVEL: info
+      PHASETWO_ANALYTICS_DISABLED: "true"
     volumes:
       - ./config/keycloak/kuntur.json:/opt/keycloak/data/import/kuntur.json
     ports:
