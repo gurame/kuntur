@@ -1,4 +1,4 @@
-using Kuntur.Backoffice.Components;
+using Kuntur.Backoffice;
 
 var builder = WebApplication.CreateBuilder(args);
 
