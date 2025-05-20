@@ -69,6 +69,10 @@ Blazor United?
 - Auto Prerendered
 - SSR
 
+#### Dependency Injection
+
+Per circuit (socket connection)
+
 ----------------------------------------------------------------
 
 dotnet new blazor -n Kuntur.Backoffice -int Server --no-https
