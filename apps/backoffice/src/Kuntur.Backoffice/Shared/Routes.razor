@@ -1,6 +1,4 @@
-﻿@using Kuntur.Backoffice.Shared.Layout
-@using Microsoft.AspNetCore.Components.Authorization;
-
+﻿@using Microsoft.AspNetCore.Components.Authorization;
 <Router AppAssembly="typeof(Program).Assembly">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
@@ -11,8 +9,7 @@
                 <p>Authenticating...</p>
             </Authorizing>
         </AuthorizeRouteView>
-        @* <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" /> *@
-        @* <FocusOnNavigate RouteData="routeData" Selector="h1" /> *@
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
     <NotFound>
         <LayoutView Layout="@typeof(MainLayout)">

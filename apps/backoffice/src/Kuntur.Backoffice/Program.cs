@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
@@ -17,6 +16,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
 }).AddCookie(options =>
 {
+    options.Cookie.Name = builder.Configuration["Authentication:Schemes:Cookie:Name"];
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
 }).AddOpenIdConnect(options =>
 {
@@ -26,17 +26,15 @@ builder.Services.AddAuthentication(options =>
     options.CallbackPath = builder.Configuration["Authentication:Schemes:OIDC:CallbackPath"];
     options.SignedOutCallbackPath = builder.Configuration["Authentication:Schemes:OIDC:SignedOutCallbackPath"];
     options.ResponseType = builder.Configuration["Authentication:Schemes:OIDC:ResponseType"]!;
+    options.Prompt = builder.Configuration["Authentication:Schemes:OIDC:Prompt"];
     options.SaveTokens = true;
     options.GetClaimsFromUserInfoEndpoint = true;
-    options.PushedAuthorizationBehavior = PushedAuthorizationBehavior.Disable;
     options.MapInboundClaims = false;
     options.Scope.Add("openid");
     options.Scope.Add("profile");
     options.Scope.Add("email");
-    options.Scope.Add("organization");
     options.ClaimActions.MapJsonKey("organization", "organization");
     options.RequireHttpsMetadata = false;
-    options.Prompt = "select_account";
 });
 
 builder.Services.AddAuthorizationBuilder()
@@ -46,7 +44,6 @@ builder.Services.AddAuthorizationBuilder()
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
