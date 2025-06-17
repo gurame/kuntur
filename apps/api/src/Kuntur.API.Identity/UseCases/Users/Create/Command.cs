@@ -2,7 +2,7 @@ using Kuntur.API.Identity.Contracts;
 using Kuntur.API.Identity.Domain.UserAggregate.ValueObjects;
 using Kuntur.API.Identity.Interfaces;
 
-namespace Kuntur.API.Identity.UseCases.Users;
+namespace Kuntur.API.Identity.UseCases.Users.Create;
 
 internal class CreateUserCommandHandler(IIdentityProvider provider) : ICommandHandler<CreateUserCommand, ErrorOr<CreateUserResponse>>
 {

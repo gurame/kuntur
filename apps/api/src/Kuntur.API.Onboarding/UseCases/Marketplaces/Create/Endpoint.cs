@@ -1,6 +1,7 @@
 using Kuntur.API.Common.Infrastructure.Endpoints;
 
-namespace Kuntur.API.Onboarding.UseCases.Marketplaces;
+namespace Kuntur.API.Onboarding.UseCases.Marketplaces.Create;
+
 internal class CreateEndpoint : IEndpoint
 {
     public record CreateRequest(

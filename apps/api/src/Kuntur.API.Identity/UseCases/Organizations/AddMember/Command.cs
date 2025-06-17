@@ -3,7 +3,7 @@ using Kuntur.API.Identity.Domain.OrganizationAggregate.ValueObjects;
 using Kuntur.API.Identity.Domain.UserAggregate.ValueObjects;
 using Kuntur.API.Identity.Interfaces;
 
-namespace Kuntur.API.Identity.UseCases.Organizations;
+namespace Kuntur.API.Identity.UseCases.Organizations.AddMember;
 
 internal class AddMemberToOrganizationCommandHandler(IIdentityProvider identityProvider) :
     ICommandHandler<AddMemberToOrganizationCommand, ErrorOr<Success>>

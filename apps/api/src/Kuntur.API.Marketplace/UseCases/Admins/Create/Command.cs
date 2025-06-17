@@ -7,7 +7,7 @@ using Kuntur.API.Marketplace.Domain.AdminAggregate.ValueObjects;
 using Kuntur.API.Marketplace.Domain.Common.ValueObjects;
 using Kuntur.API.Marketplace.Interfaces;
 
-namespace Kuntur.API.Marketplace.UseCases.Admins;
+namespace Kuntur.API.Marketplace.UseCases.Admins.Create;
 
 internal class CreateAdminProfileCommandHandler(IMarketplaceRepository<Admin> repository) :
     ICommandHandler<CreateAdminCommand, ErrorOr<CreateAdminResponse>>

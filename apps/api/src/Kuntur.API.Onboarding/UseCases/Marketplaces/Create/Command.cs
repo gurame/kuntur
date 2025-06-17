@@ -2,7 +2,8 @@ using Kuntur.API.Common.UseCases;
 using Kuntur.API.Identity.Contracts;
 using Kuntur.API.Marketplace.Contracts;
 
-namespace Kuntur.API.Onboarding.UseCases.Marketplaces;
+namespace Kuntur.API.Onboarding.UseCases.Marketplaces.Create;
+
 internal record CreateCommandResult(Guid MarketplaceId);
 internal record CreateCommand(
     string Name, string TaxId,

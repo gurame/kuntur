@@ -1,4 +1,4 @@
-namespace Kuntur.API.Onboarding.UseCases.Marketplaces;
+namespace Kuntur.API.Onboarding.UseCases.Marketplaces.Create;
 
 internal class CreateCommandValidator : AbstractValidator<CreateCommand>
 {

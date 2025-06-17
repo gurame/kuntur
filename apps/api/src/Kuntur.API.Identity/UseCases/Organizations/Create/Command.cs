@@ -1,7 +1,7 @@
 using Kuntur.API.Identity.Contracts;
 using Kuntur.API.Identity.Interfaces;
 
-namespace Kuntur.API.Identity.UseCases.Organizations;
+namespace Kuntur.API.Identity.UseCases.Organizations.Create;
 
 internal class CreateOrganizationCommandHandler(IIdentityProvider identityProvider) : 
     ICommandHandler<CreateOrganizationCommand, ErrorOr<CreateOrganizationResponse>>

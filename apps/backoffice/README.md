@@ -76,3 +76,9 @@ Per circuit (socket connection)
 ----------------------------------------------------------------
 
 dotnet new blazor -n Kuntur.Backoffice -int Server --no-https
+
+#### Components
+
+- Microsoft.AspNetCore.Components.QuickGrid
+
+- ValueExpression?

@@ -1,7 +1,7 @@
 using FluentValidation;
 using Kuntur.API.Identity.Contracts;
 
-namespace Kuntur.API.Identity.UseCases.Users;
+namespace Kuntur.API.Identity.UseCases.Users.Create;
 
 internal class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {

@@ -6,7 +6,7 @@ using Kuntur.API.Marketplace.Domain.AdminAggregate.ValueObjects;
 using Kuntur.API.Marketplace.Domain.SubscriptionAggregate;
 using Kuntur.API.Marketplace.Interfaces;
 
-namespace Kuntur.API.Marketplace.UseCases.Subscriptions;
+namespace Kuntur.API.Marketplace.UseCases.Subscriptions.Create;
 
 internal class CreateSubscriptionCommandHandler(IMarketplaceRepository<Subscription> repository) :
     ICommandHandler<CreateSubscriptionCommand, ErrorOr<CreateSubscriptionResponse>>
