@@ -1,5 +1,23 @@
 
 services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kuntur_api
+    ports:
+      - "5170:5170"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5170
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=kuntur;Username=postgres;Password=postgres
+      - Identity__Keycloak__BaseUrl=http://keycloak:8080
+    depends_on:
+      - postgres
+      - keycloak
+    networks:
+      - kuntur_network
+
   postgres:
     image: postgres:16
     container_name: kuntur_db

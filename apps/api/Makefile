@@ -20,10 +20,15 @@ run:
 	@echo "› Running solution"
 	dotnet run --project src/Kuntur.API.Host/Kuntur.API.Host.csproj
 
-compose-up:
-	@echo "› Building and running docker containers"
+compose-all:
+	@echo "› Building and starting docker containers"
 	find config -type f -exec chmod +x {} \;
-	docker-compose -f docker-compose.yml up -d --build
+	docker-compose -f docker-compose.yml up --build -d
+
+compose-up:
+	@echo "› Start docker containers"
+	find config -type f -exec chmod +x {} \;
+	docker-compose -f docker-compose.yml up postgres keycloak -d
 
 compose-down: 
 	@echo "› Stopping and removing docker containers"
