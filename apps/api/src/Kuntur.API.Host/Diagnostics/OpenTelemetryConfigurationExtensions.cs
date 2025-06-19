@@ -3,10 +3,10 @@ using Npgsql;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Metrics;
+using OpenTelemetry.Logs;
 using Kuntur.API.Onboarding.Infrastructure.Diagnostics;
 
-
-namespace  Kuntur.API.Host.Diagnostics;
+namespace Kuntur.API.Host.Diagnostics;
 
 public static class OpenTelemetryConfigurationExtensions
 {
@@ -43,7 +43,15 @@ public static class OpenTelemetryConfigurationExtensions
                     .AddMeter(OnboardingDiagnostics.OnboardingSucceededCounter.Meter.Name)
                     .AddOtlpExporter(options =>
                         options.Endpoint = otlpEndpoint)
+            )
+            .WithLogging(
+                logging =>
+                    logging
+                        .AddOtlpExporter(options =>
+                            options.Endpoint = otlpEndpoint)
             );
+            // TODO: LogLevel
+
         return builder;
     }
 }

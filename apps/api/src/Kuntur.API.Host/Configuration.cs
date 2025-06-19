@@ -18,7 +18,7 @@ public static class Configuration
         builder.Services.AddCarter();
         builder.Services.AddProblemDetails();
 
-        builder.AddApiLogging();
+        //builder.AddApiLogging(); Replaced by Diagnostic Logging with OpenTelemetry
 
         builder.AddApiDocumentation();
 
