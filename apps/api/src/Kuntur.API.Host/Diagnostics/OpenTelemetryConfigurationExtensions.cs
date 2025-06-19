@@ -14,6 +14,8 @@ public static class OpenTelemetryConfigurationExtensions
     {
         const string serviceName = "Kuntur.API";
 
+        var otlpEndpoint = new Uri(builder.Configuration.GetValue<string>("OTLP_Endpoint")!);
+
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(resource =>
             {
@@ -31,15 +33,16 @@ public static class OpenTelemetryConfigurationExtensions
                     //.AddGrpcClientInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddNpgsql()
-                    .AddOtlpExporter(options => 
-                        options.Endpoint = new Uri(builder.Configuration.GetValue<string>("Jaeger")!))
+                    .AddOtlpExporter(options =>
+                        options.Endpoint = otlpEndpoint)
                 )
             .WithMetrics(metrics =>
                 metrics
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddMeter(OnboardingDiagnostics.OnboardingSucceededCounter.Meter.Name)
-                    .AddPrometheusExporter()
+                    .AddOtlpExporter(options =>
+                        options.Endpoint = otlpEndpoint)
             );
         return builder;
     }

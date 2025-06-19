@@ -12,7 +12,7 @@ services:
       - ASPNETCORE_URLS=http://+:5170
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=kuntur;Username=postgres;Password=postgres
       - Identity__Keycloak__BaseUrl=http://keycloak:8080
-      - Jaeger=http://jaeger:4317
+      - OTLP_Endpoint=http://otel-collector:4317
     depends_on:
       - postgres
       - keycloak
@@ -76,7 +76,7 @@ services:
     image: jaegertracing/all-in-one:1.58.0
     ports:
       - "16686:16686" # Jaeger Web UI
-      - "4317:4317" # OTLP 
+      # - "4317:4317" # OTLP 
     networks:
       - kuntur_network
 
@@ -100,6 +100,24 @@ services:
       GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
     ports:
       - "3000:3000"
+    networks:
+      - kuntur_network
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.103.0
+    volumes:
+      - ./config/otel-collector/config.yml:/etc/otel/config.yaml
+    command: --config /etc/otel/config.yaml
+    environment:
+      JAEGER_ENDPOINT: "jaeger:4317"
+    ports:
+      - "8889:8889"   # Prometheus metrics exporter (scrape endpoint)
+      - "13133:13133" # health_check extension
+      - "55679:55679" # ZPages extension
+      - "4317:4317"   # OTLP Receiver
+    depends_on:
+      - jaeger
+      - prometheus
     networks:
       - kuntur_network
 

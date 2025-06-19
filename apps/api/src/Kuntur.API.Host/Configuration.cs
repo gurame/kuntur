@@ -40,8 +40,6 @@ public static class Configuration
 
         app.UseApiVersioning();
 
-        app.UseOpenTelemetryPrometheusScrapingEndpoint();
-
         app.MapGet("/", () => Results.Content(
             """
             <h1>Kuntur API is running</h1>
