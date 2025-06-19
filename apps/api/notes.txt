@@ -1,0 +1,5 @@
+Open telemetry
+    - System.Diagnostic, ActivitySource
+    - .NET Shim and why it is not ideal for libraries
+    - Configure Resources
+    - Automatic vs Manual instrumentation (Being intentional)

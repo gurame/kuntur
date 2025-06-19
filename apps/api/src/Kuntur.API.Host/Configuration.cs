@@ -2,6 +2,7 @@ using Carter;
 using Kuntur.API.Common;
 using Kuntur.API.Common.Infrastructure;
 using Kuntur.API.Common.Infrastructure.Persistence;
+using Kuntur.API.Host.Diagnostics;
 using Kuntur.API.Host.Documentation;
 using Kuntur.API.Host.Logging;
 using Kuntur.API.Host.Versioning;
@@ -23,6 +24,8 @@ public static class Configuration
 
         builder.AddApiVersioning();
 
+        builder.AddApiDiagnostics();
+
         builder.AddPersistence();
 
         logger.Information("{Module} services configured", "Kuntur.API.Host");
@@ -36,6 +39,8 @@ public static class Configuration
         app.UseStatusCodePages();
 
         app.UseApiVersioning();
+
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
         app.MapGet("/", () => Results.Content(
             """

@@ -1,11 +1,19 @@
 .PHONY: clean-up up build watch run compose-up compose-down compose-delete new-migration zero-migration run-migration run-all-migrations zero-migration-all
 
 ## Quick commands
+# for a clean up, delete containers and volumes, then up and run
 clean-up:
 	make compose-delete && make up
 
 up:
 	make compose-up && make run-all-migrations && make run
+
+# for a clean start, delete containers and volumes, then build and up
+clean-start:
+	make compose-delete && make start
+
+start:
+	make compose-all && make run-all-migrations
 
 ## Main commands
 build:
@@ -28,16 +36,16 @@ compose-all:
 compose-up:
 	@echo "› Start docker containers"
 	find config -type f -exec chmod +x {} \;
-	docker-compose -f docker-compose.yml up postgres keycloak -d
+	docker-compose -f docker-compose.yml up postgres keycloak jaeger -d
 
 compose-down: 
 	@echo "› Stopping and removing docker containers"
 	docker-compose -f docker-compose.yml down --remove-orphans
 
 compose-delete:
-	@echo "› Stopping, removing docker containers and volumes"
-	docker-compose -f docker-compose.yml down --remove-orphans -v
-
+	@echo "› Deleting docker containers and volumes"
+	docker-compose -f docker-compose.yml down --remove-orphans --volumes
+	
 ## Database commands
 VALID_MODULES := Marketplace
 

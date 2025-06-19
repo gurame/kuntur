@@ -12,6 +12,7 @@ services:
       - ASPNETCORE_URLS=http://+:5170
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=kuntur;Username=postgres;Password=postgres
       - Identity__Keycloak__BaseUrl=http://keycloak:8080
+      - Jaeger=http://jaeger:4317
     depends_on:
       - postgres
       - keycloak
@@ -68,6 +69,37 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - kuntur_network
+  
+  jaeger:
+    image: jaegertracing/all-in-one:1.58.0
+    ports:
+      - "16686:16686" # Jaeger Web UI
+      - "4317:4317" # OTLP 
+    networks:
+      - kuntur_network
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus/rules.yml:/etc/prometheus/rules.yml
+    command:
+      - '--config.file=/etc/prometheus/rules.yml'
+    networks:
+      - kuntur_network
+        
+  grafana:
+    image: grafana/grafana:10.4.4
+    volumes:
+      - ./config/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+    ports:
+      - "3000:3000"
     networks:
       - kuntur_network
 
