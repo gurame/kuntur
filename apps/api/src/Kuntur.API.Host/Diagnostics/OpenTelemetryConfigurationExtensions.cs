@@ -3,6 +3,7 @@ using Npgsql;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Metrics;
+using Kuntur.API.Onboarding.Infrastructure.Diagnostics;
 
 
 namespace  Kuntur.API.Host.Diagnostics;
@@ -37,6 +38,7 @@ public static class OpenTelemetryConfigurationExtensions
                 metrics
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
+                    .AddMeter(OnboardingDiagnostics.OnboardingSucceededCounter.Meter.Name)
                     .AddPrometheusExporter()
             );
         return builder;
