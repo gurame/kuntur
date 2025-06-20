@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="Infrastructure\Protos\risk.proto" GrpcServices="Client" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kuntur.API.Common\Kuntur.API.Common.csproj" />
+    <ProjectReference Include="..\Kuntur.API.Identity.Contracts\Kuntur.API.Identity.Contracts.csproj" />
+    <ProjectReference Include="..\Kuntur.API.Marketplace.Contracts\Kuntur.API.Marketplace.Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Http" />
+    <PackageReference Include="Carter" />
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Grpc.Net.Client" />
+    <PackageReference Include="Grpc.Net.ClientFactory" />
+    <PackageReference Include="Grpc.Tools">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

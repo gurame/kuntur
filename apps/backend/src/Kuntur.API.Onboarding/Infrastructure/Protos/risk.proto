@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option csharp_namespace = "Kuntur.API.RiskEvaluator.Host";
+
+package risk;
+
+service Evaluator {
+  rpc Evaluate (RiskEvaluationRequest) returns (RiskEvaluationReply);
+}
+
+message RiskEvaluationRequest {
+  string taxId = 1;
+}
+
+message RiskEvaluationReply {
+  RiskLevel risk_level = 1;
+}
+
+enum RiskLevel {
+  Low = 0;
+  Medium = 1;
+  High = 2;
+}
+

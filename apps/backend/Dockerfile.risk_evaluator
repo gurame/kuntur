@@ -1,0 +1,21 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+COPY ["src/Kuntur.API.RiskEvaluator.Host/Kuntur.API.RiskEvaluator.Host.csproj", "Kuntur.API.RiskEvaluator.Host/"]
+COPY ["Directory.Build.props", "Directory.Build.props"]
+COPY ["Directory.Packages.props", "Directory.Packages.props"]
+RUN dotnet restore "Kuntur.API.RiskEvaluator.Host/Kuntur.API.RiskEvaluator.Host.csproj"
+COPY src/Kuntur.API.RiskEvaluator.Host/ ./Kuntur.API.RiskEvaluator.Host/
+WORKDIR "/src/Kuntur.API.RiskEvaluator.Host"
+RUN dotnet publish "Kuntur.API.RiskEvaluator.Host.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+COPY --from=build /app/publish .
+
+# Change user to run the application, (geocs means don't interactively prompt for various info about the user)
+RUN adduser --disabled-password --gecos '' appuser
+USER appuser
+
+ENTRYPOINT ["dotnet", "Kuntur.API.RiskEvaluator.Host.dll"]
