@@ -1,0 +1,25 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+COPY ["src/Kuntur.Worker.Host/Kuntur.Worker.Host.csproj", "Kuntur.Worker.Host/"]
+COPY ["src/Kuntur.Worker.Notifications/Kuntur.Worker.Notifications.csproj", "Kuntur.Worker.Notifications/"]
+COPY ["src/Kuntur.API.Common/Kuntur.API.Common.csproj", "Kuntur.API.Common/"]
+COPY ["Directory.Build.props", "Directory.Build.props"]
+COPY ["Directory.Packages.props", "Directory.Packages.props"]
+RUN dotnet restore "Kuntur.Worker.Host/Kuntur.Worker.Host.csproj"
+COPY src/Kuntur.Worker.Host/ ./Kuntur.Worker.Host/
+COPY src/Kuntur.Worker.Notifications/ ./Kuntur.Worker.Notifications/
+COPY src/Kuntur.API.Common/ ./Kuntur.API.Common/
+WORKDIR "/src/Kuntur.Worker.Host"
+RUN dotnet publish "Kuntur.Worker.Host.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+COPY --from=build /app/publish .
+
+# Change user to run the application, (geocs means don't interactively prompt for various info about the user)
+RUN adduser --disabled-password --gecos '' appuser
+USER appuser
+
+ENTRYPOINT ["dotnet", "Kuntur.Worker.Host.dll"]

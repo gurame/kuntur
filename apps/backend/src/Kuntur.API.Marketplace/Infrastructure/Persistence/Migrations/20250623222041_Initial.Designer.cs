@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(MarketplaceDbContext))]
-    [Migration("20250510192151_Initial")]
+    [Migration("20250623222041_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,6 +24,28 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Kuntur.API.Common.Infrastructure.IntegrationEvents.OutboxIntegrationEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("Id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EventContent")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EventName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutboxIntegrationEvent", "marketplace");
+                });
 
             modelBuilder.Entity("Kuntur.API.Marketplace.Domain.AdminAggregate.Admin", b =>
                 {
@@ -50,6 +72,11 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("MarketplaceId");
 
+                    b.Property<string>("TaxId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("TaxId");
+
                     b.Property<int>("_maxSellers")
                         .HasColumnType("integer")
                         .HasColumnName("MaxSellers");
@@ -62,11 +89,6 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("_subscriptionId")
                         .HasColumnType("uuid")
                         .HasColumnName("SubscriptionId");
-
-                    b.Property<string>("_taxId")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("TaxId");
 
                     b.HasKey("Id");
 

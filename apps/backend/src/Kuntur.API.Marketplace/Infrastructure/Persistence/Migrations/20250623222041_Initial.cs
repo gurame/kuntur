@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -34,14 +35,29 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                 columns: table => new
                 {
                     MarketplaceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TaxId = table.Column<string>(type: "text", nullable: false),
                     MaxSellers = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    SubscriptionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TaxId = table.Column<string>(type: "text", nullable: false)
+                    SubscriptionId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Marketplace", x => x.MarketplaceId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OutboxIntegrationEvent",
+                schema: "marketplace",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EventName = table.Column<string>(type: "text", nullable: false),
+                    EventContent = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OutboxIntegrationEvent", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,6 +85,10 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Marketplace",
+                schema: "marketplace");
+
+            migrationBuilder.DropTable(
+                name: "OutboxIntegrationEvent",
                 schema: "marketplace");
 
             migrationBuilder.DropTable(

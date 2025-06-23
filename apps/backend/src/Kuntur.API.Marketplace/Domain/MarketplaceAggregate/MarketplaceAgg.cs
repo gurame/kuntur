@@ -8,6 +8,7 @@ internal class MarketplaceAgg : AggregateRoot<MarketplaceId>
     private readonly string _taxId = default!;
     public string TaxId => _taxId;
     private readonly string _name = default!;
+    public string Name => _name;
     private readonly int _maxSellers = default!;
     private readonly SubscriptionId _subscriptionId = default!;
     private MarketplaceAgg() : base(default!) { }

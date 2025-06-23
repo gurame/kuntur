@@ -17,6 +17,7 @@ services:
     depends_on:
       - postgres
       - keycloak
+      - rabbitmq
     networks:
       - kuntur_network
   risk_evaluator:
@@ -30,6 +31,17 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5122
       - OTLP_Endpoint=http://otel-collector:4317
+    networks:
+      - kuntur_network
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: kuntur_worker
+    environment:
+      - DOTNET_ENVIRONMENT=Development
+    depends_on:
+      - rabbitmq
     networks:
       - kuntur_network
   postgres:
@@ -136,7 +148,14 @@ services:
       - loki
     networks:
       - kuntur_network
-
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - kuntur_network
+      
 volumes:
   postgres_data:
 

@@ -22,6 +22,28 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Kuntur.API.Common.Infrastructure.IntegrationEvents.OutboxIntegrationEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("Id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EventContent")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EventName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutboxIntegrationEvent", "marketplace");
+                });
+
             modelBuilder.Entity("Kuntur.API.Marketplace.Domain.AdminAggregate.Admin", b =>
                 {
                     b.Property<Guid>("Id")
@@ -47,6 +69,11 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("MarketplaceId");
 
+                    b.Property<string>("TaxId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("TaxId");
+
                     b.Property<int>("_maxSellers")
                         .HasColumnType("integer")
                         .HasColumnName("MaxSellers");
@@ -59,11 +86,6 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("_subscriptionId")
                         .HasColumnType("uuid")
                         .HasColumnName("SubscriptionId");
-
-                    b.Property<string>("_taxId")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("TaxId");
 
                     b.HasKey("Id");
 
