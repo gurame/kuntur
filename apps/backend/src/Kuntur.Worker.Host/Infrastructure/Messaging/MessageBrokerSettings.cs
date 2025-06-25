@@ -1,4 +1,4 @@
-namespace Kuntur.Worker.Host.Settings;
+namespace Kuntur.Worker.Host.Infrastructure.Messaging;
 public class MessageBrokerSettings
 {
     public const string Section = "MessageBroker";

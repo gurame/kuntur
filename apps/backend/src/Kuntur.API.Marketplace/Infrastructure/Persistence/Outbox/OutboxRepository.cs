@@ -13,7 +13,7 @@ internal class OutboxRepository(IDbConnection connection, KunturDbContext dbCont
     public async Task AddAsync(OutboxIntegrationEvent outboxIntegrationEvent, CancellationToken cancellationToken = default)
     {
         const string sql = @"
-            INSERT INTO marketplace.""OutboxIntegrationEvent"" (EventName, EventContent)
+            INSERT INTO marketplace.""OutboxIntegrationEvent"" (""EventName"", ""EventContent"")
             VALUES (@EventName, @EventContent)
         ";
         await _connection.ExecuteAsync(sql, new

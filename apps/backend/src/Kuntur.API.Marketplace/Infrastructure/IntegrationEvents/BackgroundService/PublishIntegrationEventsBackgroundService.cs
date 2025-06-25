@@ -62,8 +62,11 @@ internal class PublishIntegrationEventsBackgroundService(
             _integrationEventPublisher.PublishEventAsync(integrationEvent);
             _logger.LogInformation("Integration event published successfully");
         });
-        
-        await repository.RemoveRangeAsync(outboxIntegrationEvents);
+
+        if (outboxIntegrationEvents.Count > 0)
+        {
+            await repository.RemoveRangeAsync(outboxIntegrationEvents);
+        }
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)

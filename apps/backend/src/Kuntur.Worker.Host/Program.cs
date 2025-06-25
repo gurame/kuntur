@@ -1,7 +1,6 @@
 using System.Reflection;
 using Kuntur.Worker.Host;
-using Kuntur.Worker.Host.Settings;
-using Microsoft.Extensions.Options;
+using Kuntur.Worker.Host.Infrastructure;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -14,11 +13,8 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblies([.. assemblies]);
 });
 
-// Add Options
-builder.Services.Configure<MessageBrokerSettings>(
-    builder.Configuration.GetSection(MessageBrokerSettings.Section));
-
-// Add Background Services
+// Add Services
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddHostedService<Worker>();
 
 var host = builder.Build();
