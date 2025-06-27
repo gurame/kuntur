@@ -1,8 +1,11 @@
 using System.Reflection;
 using Kuntur.Worker.Host;
 using Kuntur.Worker.Host.Infrastructure;
+using Kuntur.Worker.Host.Diagnostics;
 
 var builder = Host.CreateApplicationBuilder(args);
+
+builder.AddOpenTelemetry();
 
 // Add Event Handlers
 List<Assembly> assemblies = [

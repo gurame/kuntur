@@ -3,12 +3,14 @@ WORKDIR /src
 COPY ["src/Kuntur.Worker.Host/Kuntur.Worker.Host.csproj", "Kuntur.Worker.Host/"]
 COPY ["src/Kuntur.Worker.Notifications/Kuntur.Worker.Notifications.csproj", "Kuntur.Worker.Notifications/"]
 COPY ["src/Kuntur.API.Common/Kuntur.API.Common.csproj", "Kuntur.API.Common/"]
+COPY ["src/Kuntur.SharedKernel/Kuntur.SharedKernel.csproj", "Kuntur.SharedKernel/"]
 COPY ["Directory.Build.props", "Directory.Build.props"]
 COPY ["Directory.Packages.props", "Directory.Packages.props"]
 RUN dotnet restore "Kuntur.Worker.Host/Kuntur.Worker.Host.csproj"
 COPY src/Kuntur.Worker.Host/ ./Kuntur.Worker.Host/
 COPY src/Kuntur.Worker.Notifications/ ./Kuntur.Worker.Notifications/
 COPY src/Kuntur.API.Common/ ./Kuntur.API.Common/
+COPY src/Kuntur.SharedKernel/ ./Kuntur.SharedKernel/
 WORKDIR "/src/Kuntur.Worker.Host"
 RUN dotnet publish "Kuntur.Worker.Host.csproj" -c Release -o /app/publish /p:UseAppHost=false --no-restore
 

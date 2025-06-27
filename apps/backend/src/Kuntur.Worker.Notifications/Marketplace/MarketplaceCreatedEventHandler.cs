@@ -1,4 +1,4 @@
-using Kuntur.API.Common.Infrastructure.IntegrationEvents.Marketplace;
+using Kuntur.SharedKernel.IntegrationEvents.Marketplace;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

@@ -1,7 +1,10 @@
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
-using Kuntur.API.Common.Infrastructure.IntegrationEvents;
+using Kuntur.API.Common.Infrastructure.Messaging;
+using Kuntur.SharedKernel.IntegrationEvents;
 using MediatR;
+using OpenTelemetry;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Throw;
@@ -37,10 +40,29 @@ public class RabbitMqBasicAsyncConsumer(
         {
             _logger.LogInformation("Received integration event from exchange '{Exchange}' with routing key '{RoutingKey}'.", exchange, routingKey);
 
+            foreach (var header in properties.Headers ?? Enumerable.Empty<KeyValuePair<string, object?>>())
+            {
+                _logger.LogInformation("Header: {Key} = {Value}", header.Key, Encoding.UTF8.GetString((byte[])header.Value!));
+            }
+
+            var parentContext = RabbitMqDiagnostics.Propagator.Extract(default,
+                properties,
+                ExtractTraceContextFromBasicProperties);
+            Baggage.Current = parentContext.Baggage;
+
+            _logger.LogInformation("TraceId: {TraceId}", parentContext.ActivityContext.TraceId);
+
+            // Start an activity with a name following the semantic convention of the OpenTelemetry messaging specification.
+            // https://github.com/open-telemetry/semantic-conventions/blob/main/docs/messaging/messaging-spans.md
+            const string operation = "process";
+            var activityName = $"{operation} {routingKey}";
+
+            using var activity = RabbitMqDiagnostics.ActivitySource.StartActivity(activityName, ActivityKind.Consumer, parentContext.ActivityContext);
+            SetActivityContext(activity, routingKey, operation);
+            activity?.SetTag("source_app.name", Baggage.Current.GetBaggage("source_app.name"));
+
             using var scope = _serviceScopeFactory.CreateScope();
-
             var message = Encoding.UTF8.GetString(body.Span);
-
             var integrationEvent = JsonSerializer.Deserialize<IIntegrationEvent>(message);
             integrationEvent.ThrowIfNull();
 
@@ -87,5 +109,23 @@ public class RabbitMqBasicAsyncConsumer(
     {
         _logger.LogInformation("Consumer registration successful: {ConsumerTag}", consumerTag);
         return Task.CompletedTask;
+    }
+
+    private static void SetActivityContext(Activity? activity, string eventName, string operation)
+    {
+        if (activity is null) return;
+        // These tags are added demonstrating the semantic conventions of the OpenTelemetry messaging specification
+        // https://github.com/open-telemetry/semantic-conventions/blob/main/docs/messaging/messaging-spans.md
+        activity.SetTag("messaging.system", "rabbitmq");
+        activity.SetTag("messaging.destination_kind", "queue");
+        activity.SetTag("messaging.operation", operation);
+        activity.SetTag("messaging.destination.name", eventName);
+    }
+    private static IEnumerable<string> ExtractTraceContextFromBasicProperties(IReadOnlyBasicProperties props, string key)
+    {
+        if (!props.Headers!.TryGetValue(key, out var value)) return [];
+
+        var bytes = value as byte[];
+        return [Encoding.UTF8.GetString(bytes!)];
     }
 }

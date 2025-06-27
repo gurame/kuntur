@@ -1,4 +1,4 @@
-using Kuntur.API.Common.Infrastructure.IntegrationEvents;
+using Kuntur.SharedKernel.IntegrationEvents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -2,6 +2,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Kuntur.API.Common\Kuntur.API.Common.csproj" />
     <ProjectReference Include="..\Kuntur.API.Marketplace.Contracts\Kuntur.API.Marketplace.Contracts.csproj" />
+    <ProjectReference Include="..\Kuntur.SharedKernel\Kuntur.SharedKernel.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dapper" />

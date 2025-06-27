@@ -1,7 +1,7 @@
 using System.Text.Json;
-using Kuntur.API.Common.Infrastructure.IntegrationEvents;
 using Kuntur.API.Marketplace.Infrastructure.IntegrationEvents.IntegrationEventsPublisher;
 using Kuntur.API.Marketplace.Infrastructure.Persistence.Outbox;
+using Kuntur.SharedKernel.IntegrationEvents;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -50,21 +50,19 @@ internal class PublishIntegrationEventsBackgroundService(
         var repository = scope.ServiceProvider.GetRequiredService<IOutboxRepository>();
 
         var outboxIntegrationEvents = await repository.GetPendingEventsAsync();
-
-        _logger.LogInformation("Read a total of {NumEvents} outbox integration events", outboxIntegrationEvents.Count);
-
-        outboxIntegrationEvents.ForEach(outboxIntegrationEvent =>
-        {
-            var integrationEvent = JsonSerializer.Deserialize<IIntegrationEvent>(outboxIntegrationEvent.EventContent);
-            integrationEvent.ThrowIfNull();
-
-            _logger.LogInformation("Publishing event of type: {EventType}", integrationEvent.GetType().Name);
-            _integrationEventPublisher.PublishEventAsync(integrationEvent);
-            _logger.LogInformation("Integration event published successfully");
-        });
-
         if (outboxIntegrationEvents.Count > 0)
         {
+            _logger.LogInformation("Read a total of {NumEvents} outbox integration events", outboxIntegrationEvents.Count);
+            outboxIntegrationEvents.ForEach(outboxIntegrationEvent =>
+            {
+                var integrationEvent = JsonSerializer.Deserialize<IIntegrationEvent>(outboxIntegrationEvent.EventContent);
+                integrationEvent.ThrowIfNull();
+
+                _logger.LogInformation("Publishing event of type: {EventType}", integrationEvent.GetType().Name);
+                _integrationEventPublisher.PublishEventAsync(integrationEvent);
+                _logger.LogInformation("Integration event published successfully");
+            });
+
             await repository.RemoveRangeAsync(outboxIntegrationEvents);
         }
     }

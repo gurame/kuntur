@@ -1,19 +1,17 @@
 using System.Reflection;
-using Npgsql;
+using Kuntur.API.Common.Infrastructure.Messaging;
+using Microsoft.AspNetCore.Builder;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Logs;
-using Kuntur.API.Onboarding.Infrastructure.Diagnostics;
-using Kuntur.API.Common.Infrastructure.Messaging;
 
-namespace Kuntur.API.Host.Diagnostics;
-
+namespace Kuntur.Worker.Host.Diagnostics;
 public static class OpenTelemetryConfigurationExtensions
 {
-    public static WebApplicationBuilder AddApiDiagnostics(this WebApplicationBuilder builder)
+    public static HostApplicationBuilder AddOpenTelemetry(this HostApplicationBuilder builder)
     {
-        const string serviceName = "Kuntur.API";
+        const string serviceName = "Kuntur.Worker";
 
         var otlpEndpoint = new Uri(builder.Configuration.GetValue<string>("OTLP_Endpoint")!);
 
@@ -30,29 +28,21 @@ public static class OpenTelemetryConfigurationExtensions
             })
             .WithTracing(tracing =>
                 tracing
-                    .AddAspNetCoreInstrumentation()
-                    .AddGrpcClientInstrumentation()
-                    .AddHttpClientInstrumentation()
-                    .AddNpgsql()
                     .AddSource(RabbitMqDiagnostics.ActivitySourceName)
                     .AddOtlpExporter(options =>
                         options.Endpoint = otlpEndpoint)
-                )
+            )
             .WithMetrics(metrics =>
                 metrics
-                    .AddAspNetCoreInstrumentation()
-                    .AddHttpClientInstrumentation()
-                    .AddMeter(OnboardingDiagnostics.OnboardingSucceededCounter.Meter.Name)
                     .AddOtlpExporter(options =>
                         options.Endpoint = otlpEndpoint)
             )
             .WithLogging(
-                logging =>
+                logging=>
                     logging
-                        .AddOtlpExporter(options =>
+                        .AddOtlpExporter(options => 
                             options.Endpoint = otlpEndpoint)
             );
-            // TODO: LogLevel
 
         return builder;
     }

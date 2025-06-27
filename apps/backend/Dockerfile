@@ -13,6 +13,7 @@ COPY ["src/Kuntur.API.Marketplace.Contracts/Kuntur.API.Marketplace.Contracts.csp
 COPY ["src/Kuntur.API.Onboarding/Kuntur.API.Onboarding.csproj", "Kuntur.API.Onboarding/"]
 COPY ["src/Kuntur.API.Orders/Kuntur.API.Orders.csproj", "Kuntur.API.Orders/"]
 COPY ["src/Kuntur.API.Payments/Kuntur.API.Payments.csproj", "Kuntur.API.Payments/"]
+COPY ["src/Kuntur.SharedKernel/Kuntur.SharedKernel.csproj", "Kuntur.SharedKernel/"]
 COPY ["Directory.Build.props", "Directory.Build.props"]
 COPY ["Directory.Packages.props", "Directory.Packages.props"]
 RUN dotnet restore "Kuntur.API.Host/Kuntur.API.Host.csproj"

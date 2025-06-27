@@ -1,9 +1,8 @@
 using System.Text.Json;
-using Kuntur.API.Common.Infrastructure.IntegrationEvents;
-using Kuntur.API.Common.Infrastructure.IntegrationEvents.Marketplace;
 using Kuntur.API.Marketplace.Domain.SubscriptionAggregate.Events;
-using Kuntur.API.Marketplace.Infrastructure.Persistence;
 using Kuntur.API.Marketplace.Infrastructure.Persistence.Outbox;
+using Kuntur.SharedKernel.IntegrationEvents;
+using Kuntur.SharedKernel.IntegrationEvents.Marketplace;
 using MediatR;
 
 namespace Kuntur.API.Marketplace.Infrastructure.IntegrationEvents.OutboxWritter;

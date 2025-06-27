@@ -40,6 +40,7 @@ services:
     container_name: kuntur_worker
     environment:
       - DOTNET_ENVIRONMENT=Development
+      - OTLP_Endpoint=http://otel-collector:4317
     depends_on:
       - rabbitmq
     networks:

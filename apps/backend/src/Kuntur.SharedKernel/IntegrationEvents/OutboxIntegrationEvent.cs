@@ -1,4 +1,4 @@
-namespace Kuntur.API.Common.Infrastructure.IntegrationEvents;
+namespace Kuntur.SharedKernel.IntegrationEvents;
 public record OutboxIntegrationEvent
 {
     public int Id { get; init; } = default;
