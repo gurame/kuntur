@@ -21,6 +21,7 @@ internal class OutboxWriterEventHandler(IOutboxRepository outboxRepository) :
 
     private async Task AddOutboxIntegrationEventAsync(IIntegrationEvent integrationEvent)
     {
+        // TODO: Propagate ActivityContext to the outbox event
         await _outboxRepository.AddAsync(new OutboxIntegrationEvent(
             eventName: integrationEvent.GetType().Name,
             eventContent: JsonSerializer.Serialize(integrationEvent)));

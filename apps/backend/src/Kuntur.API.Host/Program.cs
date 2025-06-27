@@ -1,6 +1,7 @@
 using Kuntur.API.Host;
 using Serilog;
 
+// TODO: Use the ILoggerFactory to create a logger instead of using Serilog directly
 var logger = Log.Logger = new LoggerConfiguration()
   .Enrich.FromLogContext()
   .WriteTo.Console()

@@ -50,8 +50,6 @@ public class RabbitMqBasicAsyncConsumer(
                 ExtractTraceContextFromBasicProperties);
             Baggage.Current = parentContext.Baggage;
 
-            _logger.LogInformation("TraceId: {TraceId}", parentContext.ActivityContext.TraceId);
-
             // Start an activity with a name following the semantic convention of the OpenTelemetry messaging specification.
             // https://github.com/open-telemetry/semantic-conventions/blob/main/docs/messaging/messaging-spans.md
             const string operation = "process";

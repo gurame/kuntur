@@ -50,6 +50,7 @@ internal class IntegrationEventsPublisher : IIntegrationEventsPublisher
         string message = JsonSerializer.Serialize(@event);
         byte[] body = Encoding.UTF8.GetBytes(message);
 
+        // TODO: Extract ActivityContext from OutBox table and set baggage
         // [Begin] Diagnostics
         const string operation = "publish";
         string eventType = @event!.GetType().Name;
@@ -73,8 +74,6 @@ internal class IntegrationEventsPublisher : IIntegrationEventsPublisher
         {
             DeliveryMode = DeliveryModes.Persistent
         };
-
-        _logger.LogInformation("TraceId: {TraceId}", contextToInject.TraceId);
 
         Baggage.SetBaggage("source_app.name", "kuntur");
 

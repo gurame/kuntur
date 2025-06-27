@@ -45,6 +45,8 @@ public static class ModuleConfigurationExtensions
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 
+        // TODO: OpenBehaviors for INotificationHandler?
+
         services.AddValidatorsFromAssemblies(assemblies, includeInternalTypes: true);
     }
 
