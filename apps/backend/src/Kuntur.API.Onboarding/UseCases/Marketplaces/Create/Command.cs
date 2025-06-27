@@ -1,7 +1,7 @@
 using Kuntur.API.Common.UseCases;
 using Kuntur.API.Identity.Contracts;
 using Kuntur.API.Marketplace.Contracts;
-using Kuntur.API.Onboarding.Infrastructure.Diagnostics;
+using Kuntur.API.Onboarding.Diagnostics;
 using Kuntur.API.Onboarding.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -104,7 +104,7 @@ internal record CreateCommand(
                 return createMarketplaceResult.Errors;
             }
 
-            OnboardingDiagnostics.OnboardingSucceededCounter.Add(1,
+            ApplicationDiagnostics.OnboardingSucceededCounter.Add(1,
                 new KeyValuePair<string, object?>("marketplaceId", createMarketplaceResult.Value.MarketplaceId.ToString()));
 
             return new CreateCommandResult(createMarketplaceResult.Value.MarketplaceId);

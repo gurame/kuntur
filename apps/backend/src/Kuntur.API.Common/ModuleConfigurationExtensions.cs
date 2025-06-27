@@ -40,6 +40,7 @@ public static class ModuleConfigurationExtensions
             cfg.RegisterServicesFromAssemblies([.. assemblies]);
             cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
             // cfg.AddOpenBehavior(typeof(AuthorizationBehavior<,>));
+            cfg.AddOpenBehavior(typeof(TracingBehavior<,>));
             cfg.AddOpenBehavior(typeof(UnhandledExceptionBehavior<,>));
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });

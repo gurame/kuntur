@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using ErrorOr;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using OpenTelemetry.Trace;
 
 namespace Kuntur.API.Common.UseCases.Behaviors;
 
@@ -17,6 +19,9 @@ public class UnhandledExceptionBehavior<TRequest, TResponse>(ILogger<UnhandledEx
         }
         catch (Exception ex)
         {
+            Activity.Current?.SetStatus(ActivityStatusCode.Error, ex.Message);
+            Activity.Current?.AddException(ex);
+            
             string requestName = request.GetType().Name;
 
             _logger.LogError(ex, "An unhandled exception occurred while processing request {Request}", requestName);

@@ -4,8 +4,9 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Logs;
-using Kuntur.API.Onboarding.Infrastructure.Diagnostics;
 using Kuntur.API.Common.Infrastructure.Messaging;
+using Kuntur.API.Onboarding.Diagnostics;
+using Kuntur.API.Common.Diagnostics;
 
 namespace Kuntur.API.Host.Diagnostics;
 
@@ -32,9 +33,13 @@ public static class OpenTelemetryConfigurationExtensions
                 tracing
                     .AddAspNetCoreInstrumentation()
                     .AddGrpcClientInstrumentation()
-                    .AddHttpClientInstrumentation()
+                    .AddHttpClientInstrumentation(options =>
+                    {
+                        options.RecordException = true;
+                    })
                     .AddNpgsql()
                     .AddSource(RabbitMqDiagnostics.ActivitySourceName)
+                    .AddApiInstrumentation()
                     .AddOtlpExporter(options =>
                         options.Endpoint = otlpEndpoint)
                 )
@@ -42,7 +47,7 @@ public static class OpenTelemetryConfigurationExtensions
                 metrics
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
-                    .AddMeter(OnboardingDiagnostics.OnboardingSucceededCounter.Meter.Name)
+                    .AddOnboardingInstrumentation()
                     .AddOtlpExporter(options =>
                         options.Endpoint = otlpEndpoint)
             )
@@ -52,7 +57,7 @@ public static class OpenTelemetryConfigurationExtensions
                         .AddOtlpExporter(options =>
                             options.Endpoint = otlpEndpoint)
             );
-            // TODO: LogLevel
+        // TODO: LogLevel
 
         return builder;
     }

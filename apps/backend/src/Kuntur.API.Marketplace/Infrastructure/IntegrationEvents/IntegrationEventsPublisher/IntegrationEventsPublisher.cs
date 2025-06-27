@@ -57,6 +57,7 @@ internal class IntegrationEventsPublisher : IIntegrationEventsPublisher
         var activityName = $"{operation} {eventType}";
         using var activity = RabbitMqDiagnostics.ActivitySource.StartActivity(activityName, ActivityKind.Producer);
 
+        // TODO: How ActivityContext is created and how could be null?
         ActivityContext contextToInject = default;
 
         if (activity != null)

@@ -17,6 +17,7 @@ public class KeycloakTokenService(HttpClient httpClient, IOptions<KeycloakOption
 
     public async Task<string> GetTokenAsync()
     {
+        // TODO: Seems _cachedToken is null always, check if the token is cached correctly
         if (_cachedToken is not null && DateTime.UtcNow < _expiresAt)
             return _cachedToken;
 

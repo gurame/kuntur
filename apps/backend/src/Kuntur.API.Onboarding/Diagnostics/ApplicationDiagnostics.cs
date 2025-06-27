@@ -1,8 +1,8 @@
 using System.Diagnostics.Metrics;
 
-namespace Kuntur.API.Onboarding.Infrastructure.Diagnostics;
+namespace Kuntur.API.Onboarding.Diagnostics;
 
-public static class OnboardingDiagnostics
+public static class ApplicationDiagnostics
 {
     private const string ServiceName = "Kuntur.API.Onboarding";
     public static readonly Meter Meter = new(ServiceName);
