@@ -6,7 +6,7 @@
     <Protobuf Include="Infrastructure\Protos\risk.proto" GrpcServices="Client" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kuntur.API.Common\Kuntur.API.Common.csproj" />
+    <ProjectReference Include="..\Kuntur.API.Shared\Kuntur.API.Shared.csproj" />
     <ProjectReference Include="..\Kuntur.API.Identity.Contracts\Kuntur.API.Identity.Contracts.csproj" />
     <ProjectReference Include="..\Kuntur.API.Marketplace.Contracts\Kuntur.API.Marketplace.Contracts.csproj" />
   </ItemGroup>

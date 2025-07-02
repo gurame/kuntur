@@ -1,4 +1,4 @@
-using Kuntur.API.Common.Infrastructure.Resilience;
+using Kuntur.API.Shared.Infrastructure.Resilience;
 using Kuntur.API.Identity.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

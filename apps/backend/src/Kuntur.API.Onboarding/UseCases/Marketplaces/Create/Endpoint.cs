@@ -1,4 +1,4 @@
-using Kuntur.API.Common.Infrastructure.Endpoints;
+using Kuntur.API.Shared.Infrastructure.Endpoints;
 
 namespace Kuntur.API.Onboarding.UseCases.Marketplaces.Create;
 

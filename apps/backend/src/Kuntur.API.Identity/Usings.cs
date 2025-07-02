@@ -1,6 +1,6 @@
 global using ErrorOr;
 
-global using Kuntur.API.Common.Domain;
-global using Kuntur.API.Common.Domain.ValueObjects;
+global using Kuntur.API.Shared.Domain;
+global using Kuntur.API.Shared.Domain.ValueObjects;
 
-global using Kuntur.API.Common.UseCases;
+global using Kuntur.API.Shared.UseCases;

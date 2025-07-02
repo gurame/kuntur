@@ -1,6 +1,6 @@
 using System.Data;
-using Kuntur.API.Common;
-using Kuntur.API.Common.Infrastructure.Endpoints;
+using Kuntur.API.Shared;
+using Kuntur.API.Shared.Infrastructure.Endpoints;
 using Kuntur.API.Marketplace.Infrastructure.IntegrationEvents.BackgroundService;
 using Kuntur.API.Marketplace.Infrastructure.IntegrationEvents.IntegrationEventsPublisher;
 using Kuntur.API.Marketplace.Infrastructure.IntegrationEvents.Settings;

@@ -1,6 +1,6 @@
 using ErrorOr;
-using Kuntur.API.Common.Domain.EventualConsistency;
-using Kuntur.API.Common.DomainEventHandlers;
+using Kuntur.API.Shared.Domain.EventualConsistency;
+using Kuntur.API.Shared.DomainEventHandlers;
 using Kuntur.API.Marketplace.Domain.AdminAggregate;
 using Kuntur.API.Marketplace.Domain.SubscriptionAggregate.Events;
 using Kuntur.API.Marketplace.Interfaces;

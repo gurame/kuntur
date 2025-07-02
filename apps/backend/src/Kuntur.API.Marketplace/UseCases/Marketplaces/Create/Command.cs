@@ -1,5 +1,5 @@
 using ErrorOr;
-using Kuntur.API.Common.UseCases;
+using Kuntur.API.Shared.UseCases;
 using Kuntur.API.Marketplace.Contracts;
 using Kuntur.API.Marketplace.Domain.MarketplaceAggregate;
 using Kuntur.API.Marketplace.Domain.SubscriptionAggregate;

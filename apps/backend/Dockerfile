@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 COPY ["src/Kuntur.API.Cart/Kuntur.API.Cart.csproj", "Kuntur.API.Cart/"]
 COPY ["src/Kuntur.API.Catalog/Kuntur.API.Catalog.csproj", "Kuntur.API.Catalog/"]
-COPY ["src/Kuntur.API.Common/Kuntur.API.Common.csproj", "Kuntur.API.Common/"]
+COPY ["src/Kuntur.API.Shared/Kuntur.API.Shared.csproj", "Kuntur.API.Shared/"]
 COPY ["src/Kuntur.API.Host/Kuntur.API.Host.csproj", "Kuntur.API.Host/"]
 COPY ["src/Kuntur.API.Identity/Kuntur.API.Identity.csproj", "Kuntur.API.Identity/"]
 COPY ["src/Kuntur.API.Identity.Contracts/Kuntur.API.Identity.Contracts.csproj", "Kuntur.API.Identity.Contracts/"]

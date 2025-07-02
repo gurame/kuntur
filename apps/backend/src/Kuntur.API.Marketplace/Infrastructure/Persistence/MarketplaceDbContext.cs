@@ -1,4 +1,4 @@
-using Kuntur.API.Common.Infrastructure.Persistence;
+using Kuntur.API.Shared.Infrastructure.Persistence;
 using Kuntur.SharedKernel.IntegrationEvents;
 using Microsoft.EntityFrameworkCore;
 

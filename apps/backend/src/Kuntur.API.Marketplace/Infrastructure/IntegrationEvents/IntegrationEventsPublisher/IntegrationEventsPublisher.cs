@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
-using Kuntur.API.Common.Infrastructure.Messaging;
+using Kuntur.API.Shared.Infrastructure.Messaging;
 using Kuntur.API.Marketplace.Infrastructure.IntegrationEvents.Settings;
 using Kuntur.SharedKernel.IntegrationEvents;
 using Microsoft.EntityFrameworkCore.Metadata;

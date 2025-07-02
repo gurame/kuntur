@@ -1,0 +1,1 @@
+global using Kuntur.API.Shared.Domain.Extensions;

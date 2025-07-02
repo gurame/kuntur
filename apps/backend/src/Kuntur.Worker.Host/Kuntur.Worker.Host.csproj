@@ -6,7 +6,7 @@
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kuntur.API.Common\Kuntur.API.Common.csproj" />
+    <ProjectReference Include="..\Kuntur.API.Shared\Kuntur.API.Shared.csproj" />
     <ProjectReference Include="..\Kuntur.Worker.Notifications\Kuntur.Worker.Notifications.csproj" />
   </ItemGroup>
 </Project>

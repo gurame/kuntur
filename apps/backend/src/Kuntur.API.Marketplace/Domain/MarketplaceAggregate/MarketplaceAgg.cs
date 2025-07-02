@@ -1,4 +1,4 @@
-using Kuntur.API.Common.Domain;
+using Kuntur.API.Shared.Domain;
 using Kuntur.API.Marketplace.Domain.MarketplaceAggregate.ValueObjects;
 using Kuntur.API.Marketplace.Domain.SubscriptionAggregate.ValueObjects;
 

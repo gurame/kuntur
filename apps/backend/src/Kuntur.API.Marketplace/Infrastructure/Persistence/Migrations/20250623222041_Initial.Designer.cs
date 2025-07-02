@@ -25,7 +25,7 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Kuntur.API.Common.Infrastructure.IntegrationEvents.OutboxIntegrationEvent", b =>
+            modelBuilder.Entity("Kuntur.API.Shared.Infrastructure.IntegrationEvents.OutboxIntegrationEvent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

@@ -1,5 +1,24 @@
-Open telemetry
+Open Telemetry
     - System.Diagnostic, ActivitySource
     - .NET Shim and why it is not ideal for libraries
     - Configure Resources
     - Automatic vs Manual instrumentation (Being intentional)
+    - Smapling (Storage-based sampling)
+
+Event Sourcing
+    - Storage Pattern (Marely)
+    - Store state transitions instead of actual state (events vs state)
+    - DDD - Event Storming - Business Processes - Actions and Reactions
+    - EDA != ES. In event sourcing, events are the source of truth, not only notifications.
+
+CQRS
+    - Based on CQS (Command change state only, Query read state only)
+    - In CQRS, usually C/Q storage are separated and the state is send throught events with projections (optimized view of the data)
+
+SQLServer
+    - Automatic Concurrency Checking
+    - Write different pages for the same table
+    - Cost of occational page splits
+
+SignalR
+    - Fallback to long polling and regular polling

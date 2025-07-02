@@ -1,5 +1,5 @@
 ﻿using ErrorOr;
-using Kuntur.API.Common.UseCases;
+using Kuntur.API.Shared.UseCases;
 
 namespace Kuntur.API.Marketplace.Contracts;
 

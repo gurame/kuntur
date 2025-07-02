@@ -1,4 +1,4 @@
-using Kuntur.API.Common.Infrastructure.Persistence;
+using Kuntur.API.Shared.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;

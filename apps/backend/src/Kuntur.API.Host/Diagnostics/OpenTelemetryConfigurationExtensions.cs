@@ -4,9 +4,9 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Logs;
-using Kuntur.API.Common.Infrastructure.Messaging;
+using Kuntur.API.Shared.Infrastructure.Messaging;
 using Kuntur.API.Onboarding.Diagnostics;
-using Kuntur.API.Common.Diagnostics;
+using Kuntur.API.Shared.Diagnostics;
 
 namespace Kuntur.API.Host.Diagnostics;
 

@@ -1,4 +1,4 @@
-using Kuntur.API.Common.DomainEventHandlers;
+using Kuntur.API.Shared.DomainEventHandlers;
 using Kuntur.API.Marketplace.Domain.MarketplaceAggregate;
 using Kuntur.API.Marketplace.Domain.SubscriptionAggregate.Events;
 using Kuntur.API.Marketplace.Interfaces;

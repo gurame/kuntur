@@ -1,5 +1,5 @@
 using System.Reflection;
-using Kuntur.API.Common.Infrastructure.Messaging;
+using Kuntur.API.Shared.Infrastructure.Messaging;
 using Microsoft.AspNetCore.Builder;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;

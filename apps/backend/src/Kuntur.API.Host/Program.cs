@@ -7,10 +7,12 @@ var logger = Log.Logger = new LoggerConfiguration()
   .WriteTo.Console()
   .CreateLogger();
 
-logger.Information("Starting Kuntur API Host");
+//logger.Information("Starting Kuntur API Host");
 
 var builder = WebApplication.CreateBuilder(args);
 {
+  // get ILoggerFactory from the builder
+  
   builder.AddServices(logger)
          .AddModules(logger);
 }

@@ -1,4 +1,4 @@
-using Kuntur.API.Common.UseCases;
+using Kuntur.API.Shared.UseCases;
 using Kuntur.API.Identity.Contracts;
 using Kuntur.API.Marketplace.Contracts;
 using Kuntur.API.Onboarding.Diagnostics;

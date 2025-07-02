@@ -1,5 +1,5 @@
-using Kuntur.API.Common.Domain;
-using Kuntur.API.Common.Infrastructure.Persistence;
+using Kuntur.API.Shared.Domain;
+using Kuntur.API.Shared.Infrastructure.Persistence;
 using Kuntur.API.Marketplace.Interfaces;
 
 namespace Kuntur.API.Marketplace.Infrastructure.Persistence;
