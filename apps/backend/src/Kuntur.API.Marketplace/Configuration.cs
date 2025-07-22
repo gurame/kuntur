@@ -1,17 +1,16 @@
 using System.Data;
-using Kuntur.API.Shared;
-using Kuntur.API.Shared.Infrastructure.Endpoints;
 using Kuntur.API.Marketplace.Infrastructure.IntegrationEvents.BackgroundService;
 using Kuntur.API.Marketplace.Infrastructure.IntegrationEvents.IntegrationEventsPublisher;
 using Kuntur.API.Marketplace.Infrastructure.IntegrationEvents.Settings;
 using Kuntur.API.Marketplace.Infrastructure.Persistence;
 using Kuntur.API.Marketplace.Infrastructure.Persistence.Outbox;
 using Kuntur.API.Marketplace.Interfaces;
+using Kuntur.API.Shared;
+using Kuntur.API.Shared.Infrastructure.Endpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Npgsql;
 using Serilog;
 
@@ -27,7 +26,8 @@ public class Configuration : IModuleConfiguration
         // Add Repositories
         services.AddScoped(typeof(IMarketplaceRepository<>), typeof(MarketplaceEfRepository<>));
         // Outbox
-        services.AddScoped<IDbConnection>(sp => new NpgsqlConnection(configuration.GetConnectionString("DefaultConnection")));
+        services.AddScoped<IDbConnection>(sp =>
+            new NpgsqlConnection(configuration.GetConnectionString("DefaultConnection")));
         services.AddScoped<IOutboxRepository, OutboxRepository>();
 
         // Add Background Services

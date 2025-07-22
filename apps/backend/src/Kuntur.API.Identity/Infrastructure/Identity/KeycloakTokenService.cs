@@ -8,6 +8,7 @@ public interface IKeycloakTokenService
 {
     Task<string> GetTokenAsync();
 }
+
 public class KeycloakTokenService(HttpClient httpClient, IOptions<KeycloakOptions> options) : IKeycloakTokenService
 {
     private readonly HttpClient _httpClient = httpClient;

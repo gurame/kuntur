@@ -1,17 +1,16 @@
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Kuntur.API.Marketplace.Domain.MarketplaceAggregate;
 using Kuntur.API.Marketplace.Domain.MarketplaceAggregate.ValueObjects;
 using Kuntur.API.Marketplace.Domain.SubscriptionAggregate.ValueObjects;
+using Kuntur.API.Marketplace.Domain.TenantMarketplaceAggregate;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Configurations;
 
-internal class MaerketplaceConfiguration : IEntityTypeConfiguration<MarketplaceAgg>
+internal class MarketplaceConfiguration : IEntityTypeConfiguration<TenantMarketplace>
 {
-    public void Configure(EntityTypeBuilder<MarketplaceAgg> builder)
+    public void Configure(EntityTypeBuilder<TenantMarketplace> builder)
     {
-        builder.ToTable("Marketplace", "marketplace");
+        builder.ToTable("TenantMarketplace", "marketplace");
 
         builder.HasKey(u => u.Id);
 

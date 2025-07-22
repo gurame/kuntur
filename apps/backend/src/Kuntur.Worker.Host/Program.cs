@@ -1,20 +1,19 @@
 using System.Reflection;
 using Kuntur.Worker.Host;
-using Kuntur.Worker.Host.Infrastructure;
 using Kuntur.Worker.Host.Diagnostics;
+using Kuntur.Worker.Host.Infrastructure;
+using Kuntur.Worker.MarketplaceManagement;
 
 var builder = Host.CreateApplicationBuilder(args);
 
 builder.AddOpenTelemetry();
 
 // Add Event Handlers
-List<Assembly> assemblies = [
-    typeof(Kuntur.Worker.Notifications.WorkerMarker).Assembly,
+List<Assembly> assemblies =
+[
+    typeof(WorkerMarker).Assembly
 ];
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssemblies([.. assemblies]);
-});
+builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblies([.. assemblies]); });
 
 // Add Services
 builder.Services.AddInfrastructure(builder.Configuration);

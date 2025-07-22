@@ -5,11 +5,12 @@ namespace Kuntur.Worker.Host.Infrastructure.Messaging.Factories;
 
 public class ChannelFactory : IChannelFactory
 {
-    private readonly MessageBrokerSettings _messageBrokerSettings;
     private readonly ConnectionFactory _connectionFactory;
     private readonly ILogger<ChannelFactory> _logger;
+    private readonly MessageBrokerSettings _messageBrokerSettings;
+
     public ChannelFactory(IOptions<MessageBrokerSettings> messageBrokerOptions,
-                          ILogger<ChannelFactory> logger)
+        ILogger<ChannelFactory> logger)
     {
         _messageBrokerSettings = messageBrokerOptions.Value;
         _logger = logger;
@@ -24,28 +25,25 @@ public class ChannelFactory : IChannelFactory
 
     public async Task<IChannel> CreateChannelAsync(CancellationToken ct)
     {
-        IConnection? _connection = null;
+        IConnection? connection = null;
 
         const int MAX_RETRIES = 5;
-        int retryCount = 0;
-        while (_connection == null || !_connection.IsOpen)
-        {
+        var retryCount = 0;
+        while (connection is not { IsOpen: true })
             try
             {
                 _logger.LogInformation("Attempting to create a new RabbitMQ connection.");
-                _connection = await _connectionFactory.CreateConnectionAsync(ct);
+                connection = await _connectionFactory.CreateConnectionAsync(ct);
             }
             catch (Exception ex)
             {
                 retryCount++;
-                _logger.LogError(ex, "Failed to create RabbitMQ connection. Attempt {RetryCount} of {MaxRetries}. ", retryCount, MAX_RETRIES);
-                if (retryCount >= MAX_RETRIES)
-                {
-                    throw;
-                }
+                _logger.LogError(ex, "Failed to create RabbitMQ connection. Attempt {RetryCount} of {MaxRetries}. ",
+                    retryCount, MAX_RETRIES);
+                if (retryCount >= MAX_RETRIES) throw;
                 await Task.Delay(TimeSpan.FromSeconds(2), ct); // Wait before retrying
             }
-        }
-        return await _connection.CreateChannelAsync(cancellationToken: ct);
+
+        return await connection.CreateChannelAsync(cancellationToken: ct);
     }
 }

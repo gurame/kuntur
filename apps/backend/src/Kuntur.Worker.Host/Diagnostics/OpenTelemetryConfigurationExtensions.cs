@@ -1,12 +1,12 @@
 using System.Reflection;
 using Kuntur.API.Shared.Infrastructure.Messaging;
-using Microsoft.AspNetCore.Builder;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 namespace Kuntur.Worker.Host.Diagnostics;
+
 public static class OpenTelemetryConfigurationExtensions
 {
     public static HostApplicationBuilder AddOpenTelemetry(this HostApplicationBuilder builder)
@@ -37,11 +37,10 @@ public static class OpenTelemetryConfigurationExtensions
                     .AddOtlpExporter(options =>
                         options.Endpoint = otlpEndpoint)
             )
-            .WithLogging(
-                logging=>
-                    logging
-                        .AddOtlpExporter(options => 
-                            options.Endpoint = otlpEndpoint)
+            .WithLogging(logging =>
+                logging
+                    .AddOtlpExporter(options =>
+                        options.Endpoint = otlpEndpoint)
             );
 
         return builder;

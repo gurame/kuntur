@@ -55,7 +55,7 @@ VALID_MODULES := Marketplace
 
 define check_module
 case "$$module" in \
-  Marketplace) ;; \
+  $(VALID_MODULES)) ;; \
   *) echo "Error: invalid module '$$module'. Allowed: $(VALID_MODULES)"; exit 1;; \
 esac;
 endef
@@ -89,7 +89,7 @@ zero-migration:
 	$(call check_module) \
 	read -p "Are you sure you want to delete the migrations of $$module? (y/n) " CONFIRM; \
 	if [ "$$CONFIRM" != "y" ]; then \
-	  echo "Abroting..."; exit 1; \
+	  echo "Aborting..."; exit 1; \
 	fi; \
 	MIG_PATH=Infrastructure/Persistence/Migrations; \
 	if [ -d "src/Kuntur.API.$$module/$$MIG_PATH" ]; then \

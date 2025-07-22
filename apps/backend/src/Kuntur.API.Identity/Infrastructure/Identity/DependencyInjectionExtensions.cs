@@ -1,10 +1,11 @@
-using Kuntur.API.Shared.Infrastructure.Resilience;
 using Kuntur.API.Identity.Interfaces;
+using Kuntur.API.Shared.Infrastructure.Resilience;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 namespace Kuntur.API.Identity.Infrastructure.Identity;
+
 internal static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddKeycloak(this IServiceCollection services,

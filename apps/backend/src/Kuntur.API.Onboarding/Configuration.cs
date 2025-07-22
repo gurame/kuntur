@@ -1,7 +1,7 @@
-using Kuntur.API.Shared;
-using Kuntur.API.Shared.Infrastructure.Endpoints;
 using Kuntur.API.Onboarding.Interfaces;
 using Kuntur.API.RiskEvaluator.Host;
+using Kuntur.API.Shared;
+using Kuntur.API.Shared.Infrastructure.Endpoints;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -18,6 +18,7 @@ public class Configuration : IModuleConfiguration
             options.Address = new Uri(configuration["RiskEvaluator:Url"]!);
         });
     }
+
     public void AddRoutes(IEndpointRouteBuilder app)
     {
         const string basePath = "onboarding";

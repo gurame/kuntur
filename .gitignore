@@ -396,7 +396,11 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
-# JetBrains Rider
-*.sln.iml
-
+# Environment file
 .env
+
+# Rider/JetBrains
+.idea/
+
+# macOS
+.DS_Store

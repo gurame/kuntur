@@ -14,17 +14,30 @@ internal class PublishIntegrationEventsBackgroundService(
     IServiceScopeFactory serviceScopeFactory,
     ILogger<PublishIntegrationEventsBackgroundService> logger) : IHostedService
 {
-    private readonly IIntegrationEventsPublisher _integrationEventPublisher = integrationEventPublisher;
-    private readonly IServiceScopeFactory _serviceScopeFactory = serviceScopeFactory;
-    private readonly ILogger<PublishIntegrationEventsBackgroundService> _logger = logger;
     private readonly CancellationTokenSource _cts = new();
-    private Task? _doWorkTask = null;
-    private PeriodicTimer? _timer = null!;
+    private readonly IIntegrationEventsPublisher _integrationEventPublisher = integrationEventPublisher;
+    private readonly ILogger<PublishIntegrationEventsBackgroundService> _logger = logger;
+    private readonly IServiceScopeFactory _serviceScopeFactory = serviceScopeFactory;
+    private Task? _doWorkTask;
+    private PeriodicTimer? _timer;
+
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await _integrationEventPublisher.InitializeAsync(cancellationToken);
         _doWorkTask = DoWorkAsync();
     }
+
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
+        if (_doWorkTask is null) return;
+
+        _cts.Cancel();
+        await _doWorkTask;
+
+        _timer?.Dispose();
+        _cts.Dispose();
+    }
+
     private async Task DoWorkAsync()
     {
         _logger.LogInformation("Starting integration event publisher background service.");
@@ -32,7 +45,6 @@ internal class PublishIntegrationEventsBackgroundService(
         _timer = new PeriodicTimer(TimeSpan.FromSeconds(5));
 
         while (await _timer.WaitForNextTickAsync(_cts.Token))
-        {
             try
             {
                 await PublishIntegrationEventsFromDbAsync();
@@ -41,7 +53,6 @@ internal class PublishIntegrationEventsBackgroundService(
             {
                 _logger.LogError(e, "Exception occurred while publishing integration events.");
             }
-        }
     }
 
     private async Task PublishIntegrationEventsFromDbAsync()
@@ -52,10 +63,12 @@ internal class PublishIntegrationEventsBackgroundService(
         var outboxIntegrationEvents = await repository.GetPendingEventsAsync();
         if (outboxIntegrationEvents.Count > 0)
         {
-            _logger.LogInformation("Read a total of {NumEvents} outbox integration events", outboxIntegrationEvents.Count);
+            _logger.LogInformation("Read a total of {NumEvents} outbox integration events",
+                outboxIntegrationEvents.Count);
             outboxIntegrationEvents.ForEach(outboxIntegrationEvent =>
             {
-                var integrationEvent = JsonSerializer.Deserialize<IIntegrationEvent>(outboxIntegrationEvent.EventContent);
+                var integrationEvent =
+                    JsonSerializer.Deserialize<IIntegrationEvent>(outboxIntegrationEvent.EventContent);
                 integrationEvent.ThrowIfNull();
 
                 _logger.LogInformation("Publishing event of type: {EventType}", integrationEvent.GetType().Name);
@@ -65,19 +78,5 @@ internal class PublishIntegrationEventsBackgroundService(
 
             await repository.RemoveRangeAsync(outboxIntegrationEvents);
         }
-    }
-
-    public async Task StopAsync(CancellationToken cancellationToken)
-    {
-        if (_doWorkTask is null)
-        {
-            return;
-        }
-
-        _cts.Cancel();
-        await _doWorkTask;
-
-        _timer?.Dispose();
-        _cts.Dispose();
     }
 }

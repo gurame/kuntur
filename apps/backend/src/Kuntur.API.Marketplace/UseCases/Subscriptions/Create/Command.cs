@@ -1,10 +1,9 @@
 using ErrorOr;
-using Kuntur.API.Shared.UseCases;
 using Kuntur.API.Marketplace.Contracts;
-using Kuntur.API.Marketplace.Domain.AdminAggregate;
 using Kuntur.API.Marketplace.Domain.AdminAggregate.ValueObjects;
 using Kuntur.API.Marketplace.Domain.SubscriptionAggregate;
 using Kuntur.API.Marketplace.Interfaces;
+using Kuntur.API.Shared.UseCases;
 
 namespace Kuntur.API.Marketplace.UseCases.Subscriptions.Create;
 
@@ -12,7 +11,9 @@ internal class CreateSubscriptionCommandHandler(IMarketplaceRepository<Subscript
     ICommandHandler<CreateSubscriptionCommand, ErrorOr<CreateSubscriptionResponse>>
 {
     private readonly IMarketplaceRepository<Subscription> _repository = repository;
-    public async Task<ErrorOr<CreateSubscriptionResponse>> Handle(CreateSubscriptionCommand request, CancellationToken ct)
+
+    public async Task<ErrorOr<CreateSubscriptionResponse>> Handle(CreateSubscriptionCommand request,
+        CancellationToken ct)
     {
         // TODO: By default, the subscription type is Free. we should allow the user to choose the subscription type in the future
         var adminId = new AdminId(request.AdminId);

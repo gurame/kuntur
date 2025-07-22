@@ -1,19 +1,16 @@
-
-using Throw;
+using System.Net.Mail;
 
 namespace Kuntur.API.Shared.Domain.ValueObjects;
 
 public sealed class EmailAddress : ValueObject
 {
-    public string Value { get; }
-
     public EmailAddress(string value)
     {
         value.ThrowIfEmptyOrWhiteSpace();
 
         try
         {
-            var mailAddress = new System.Net.Mail.MailAddress(value);
+            var mailAddress = new MailAddress(value);
             Value = mailAddress.Address.ToLowerInvariant();
         }
         catch
@@ -22,5 +19,10 @@ public sealed class EmailAddress : ValueObject
         }
     }
 
-    protected override IEnumerable<object?> GetEqualityComponents() => [Value];
+    public string Value { get; }
+
+    protected override IEnumerable<object?> GetEqualityComponents()
+    {
+        return [Value];
+    }
 }

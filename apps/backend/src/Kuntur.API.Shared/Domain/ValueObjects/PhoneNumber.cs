@@ -1,20 +1,23 @@
-
-using Throw;
 using PhoneNumbers;
+using Throw;
 
 namespace Kuntur.API.Shared.Domain.ValueObjects;
 
 public sealed class PhoneNumber : ValueObject
 {
-    public string Value { get; }
-    public CountryCode Country { get; }
+    private PhoneNumber() : this(string.Empty, new CountryCode(string.Empty))
+    {
+    }
 
-    private PhoneNumber() : this(string.Empty, new CountryCode(string.Empty)) {}
     private PhoneNumber(string value, CountryCode country)
     {
         Value = value;
         Country = country;
     }
+
+    public string Value { get; }
+    public CountryCode Country { get; }
+
     public static PhoneNumber Parse(string raw)
     {
         raw.Throw().IfEmpty().IfWhiteSpace();

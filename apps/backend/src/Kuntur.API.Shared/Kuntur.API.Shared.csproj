@@ -1,22 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <PackageReference Include="Ardalis.SmartEnum" />
-    <PackageReference Include="Ardalis.Specification" />
-    <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" />
-    <PackageReference Include="ErrorOr" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
-    <PackageReference Include="libphonenumber-csharp" />
-    <PackageReference Include="Mapster" />
-    <PackageReference Include="MediatR" />
-    <PackageReference Include="Carter" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
-    <PackageReference Include="Microsoft.AspNetCore.Routing" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" />
-    <PackageReference Include="Microsoft.Extensions.Http.Polly" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
-    <PackageReference Include="OpenTelemetry.Api" />
-    <PackageReference Include="Polly" />
-    <PackageReference Include="Serilog.AspNetCore" />
-    <PackageReference Include="Throw" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Ardalis.SmartEnum"/>
+        <PackageReference Include="Ardalis.Specification"/>
+        <PackageReference Include="Ardalis.Specification.EntityFrameworkCore"/>
+        <PackageReference Include="ErrorOr"/>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions"/>
+        <PackageReference Include="libphonenumber-csharp"/>
+        <PackageReference Include="Mapster"/>
+        <PackageReference Include="MediatR"/>
+        <PackageReference Include="Carter"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions"/>
+        <PackageReference Include="Microsoft.AspNetCore.Routing"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore"/>
+        <PackageReference Include="Microsoft.Extensions.Http.Polly"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"/>
+        <PackageReference Include="OpenTelemetry.Api"/>
+        <PackageReference Include="Polly"/>
+        <PackageReference Include="Serilog.AspNetCore"/>
+        <PackageReference Include="Throw"/>
+    </ItemGroup>
 </Project>

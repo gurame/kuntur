@@ -1,18 +1,22 @@
 using System.Text.RegularExpressions;
 
 namespace Kuntur.API.Identity.Domain.UserAggregate.ValueObjects;
+
 internal sealed class Password : ValueObject
 {
-    public string Value { get; }
     private Password(string value)
     {
         Value = value;
     }
+
+    public string Value { get; }
+
     public static Password FromPlainText(string plainText)
     {
         ValidatePasswordPolicy(plainText);
         return new Password(plainText);
     }
+
     private static void ValidatePasswordPolicy(string password)
     {
         if (string.IsNullOrWhiteSpace(password) || password.Length < 8)

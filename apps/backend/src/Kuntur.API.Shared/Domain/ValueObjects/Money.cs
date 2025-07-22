@@ -1,4 +1,3 @@
-
 using Throw;
 
 namespace Kuntur.API.Shared.Domain.ValueObjects;

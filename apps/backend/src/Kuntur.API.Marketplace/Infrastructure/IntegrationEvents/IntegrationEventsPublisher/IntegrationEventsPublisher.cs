@@ -1,10 +1,9 @@
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
-using Kuntur.API.Shared.Infrastructure.Messaging;
 using Kuntur.API.Marketplace.Infrastructure.IntegrationEvents.Settings;
+using Kuntur.API.Shared.Infrastructure.Messaging;
 using Kuntur.SharedKernel.IntegrationEvents;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OpenTelemetry;
@@ -16,12 +15,13 @@ namespace Kuntur.API.Marketplace.Infrastructure.IntegrationEvents.IntegrationEve
 internal class IntegrationEventsPublisher : IIntegrationEventsPublisher
 {
     private readonly ConnectionFactory _connectionFactory;
-    private readonly MessageBrokerSettings _messageBrokerSettings;
     private readonly ILogger<IntegrationEventsPublisher> _logger;
-    private IConnection? _connection;
+    private readonly MessageBrokerSettings _messageBrokerSettings;
     private IChannel? _channel;
+    private IConnection? _connection;
+
     public IntegrationEventsPublisher(IOptions<MessageBrokerSettings> messageBrokerOptions,
-           ILogger<IntegrationEventsPublisher> logger)
+        ILogger<IntegrationEventsPublisher> logger)
     {
         _messageBrokerSettings = messageBrokerOptions.Value;
         _logger = logger;
@@ -39,7 +39,8 @@ internal class IntegrationEventsPublisher : IIntegrationEventsPublisher
     {
         _connection = await _connectionFactory.CreateConnectionAsync(ct);
         _channel = await _connection.CreateChannelAsync(cancellationToken: ct);
-        await _channel.ExchangeDeclareAsync(_messageBrokerSettings.ExchangeName, ExchangeType.Fanout, durable: true, cancellationToken: ct);
+        await _channel.ExchangeDeclareAsync(_messageBrokerSettings.ExchangeName, ExchangeType.Fanout, true,
+            cancellationToken: ct);
     }
 
     public async Task PublishEventAsync(IIntegrationEvent @event)
@@ -47,13 +48,13 @@ internal class IntegrationEventsPublisher : IIntegrationEventsPublisher
         if (_channel is null)
             throw new InvalidOperationException("Publisher not initialized. Call InitializeAsync() first.");
 
-        string message = JsonSerializer.Serialize(@event);
-        byte[] body = Encoding.UTF8.GetBytes(message);
+        var message = JsonSerializer.Serialize(@event);
+        var body = Encoding.UTF8.GetBytes(message);
 
         // TODO: Extract ActivityContext from OutBox table and set baggage
         // [Begin] Diagnostics
         const string operation = "publish";
-        string eventType = @event!.GetType().Name;
+        var eventType = @event!.GetType().Name;
 
         var activityName = $"{operation} {eventType}";
         using var activity = RabbitMqDiagnostics.ActivitySource.StartActivity(activityName, ActivityKind.Producer);
@@ -62,13 +63,8 @@ internal class IntegrationEventsPublisher : IIntegrationEventsPublisher
         ActivityContext contextToInject = default;
 
         if (activity != null)
-        {
             contextToInject = activity.Context;
-        }
-        else if (Activity.Current != null)
-        {
-            contextToInject = Activity.Current.Context;
-        }
+        else if (Activity.Current != null) contextToInject = Activity.Current.Context;
 
         var properties = new BasicProperties
         {
@@ -86,7 +82,7 @@ internal class IntegrationEventsPublisher : IIntegrationEventsPublisher
         // [End] Diagnostics
 
         await _channel.BasicPublishAsync(
-            exchange: _messageBrokerSettings.ExchangeName,
+            _messageBrokerSettings.ExchangeName,
             mandatory: false,
             routingKey: string.Empty,
             basicProperties: properties,

@@ -1,16 +1,17 @@
-using Kuntur.API.Shared.DomainEventHandlers;
-using Kuntur.API.Marketplace.Domain.MarketplaceAggregate;
 using Kuntur.API.Marketplace.Domain.SubscriptionAggregate.Events;
+using Kuntur.API.Marketplace.Domain.TenantMarketplaceAggregate;
 using Kuntur.API.Marketplace.Interfaces;
+using Kuntur.API.Shared.DomainEventHandlers;
 
 namespace Kuntur.API.Marketplace.DomainEventHandlers.Marketplaces;
 
-internal class MarketplaceSetEventHandler(IMarketplaceRepository<MarketplaceAgg> reposiroty) : IDomainEventHandler<MarketplaceSetEvent>
+internal class MarketplaceSetEventHandler(IMarketplaceRepository<TenantMarketplace> repository)
+    : IDomainEventHandler<MarketplaceSetEvent>
 {
-    private readonly IMarketplaceRepository<MarketplaceAgg> _repository = reposiroty;
+    private readonly IMarketplaceRepository<TenantMarketplace> _repository = repository;
 
     public async Task Handle(MarketplaceSetEvent notification, CancellationToken ct)
     {
-        await _repository.AddAsync(notification.Marketplace, ct);
+        await _repository.AddAsync(notification.TenantMarketplace, ct);
     }
 }

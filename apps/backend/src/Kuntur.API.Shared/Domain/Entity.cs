@@ -1,7 +1,9 @@
 ﻿namespace Kuntur.API.Shared.Domain;
+
 public abstract class Entity<TId>(TId id)
 {
     public TId Id { get; } = id;
+
     public override bool Equals(object? obj)
     {
         if (obj is null || GetType() != obj.GetType())
@@ -9,6 +11,7 @@ public abstract class Entity<TId>(TId id)
 
         return obj is Entity<TId> entity && EqualityComparer<TId>.Default.Equals(Id, entity.Id);
     }
+
     public override int GetHashCode()
     {
         return Id!.GetHashCode();

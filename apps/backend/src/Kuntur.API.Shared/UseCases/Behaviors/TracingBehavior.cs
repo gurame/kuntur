@@ -4,11 +4,12 @@ using MediatR;
 
 namespace Kuntur.API.Shared.UseCases.Behaviors;
 
-public class TracingBehavior<TRequest, TResponse>() : IPipelineBehavior<TRequest, TResponse>
-  where TRequest : IRequest<TResponse>
-  where TResponse : IErrorOr
+public class TracingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
+    where TResponse : IErrorOr
 {
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         var requestType = request.GetType();
         var requestName = requestType.Name;

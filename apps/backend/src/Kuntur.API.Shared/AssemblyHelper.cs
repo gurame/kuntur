@@ -15,21 +15,18 @@ public static class AssemblyHelper
         var projectLibs = deps.RuntimeLibraries.Where(lib => lib.Type == "project");
 
         foreach (var lib in projectLibs)
-        {
-            foreach (var name in lib.GetDefaultAssemblyNames(deps))
+        foreach (var name in lib.GetDefaultAssemblyNames(deps))
+            try
             {
-                try
-                {
-                    assemblies.Add(Assembly.Load(name));
-                }
-                catch
-                {
-                    logger.Warning("Failed to load assembly {AssemblyName}", name);
-                }
+                assemblies.Add(Assembly.Load(name));
             }
-        }
+            catch
+            {
+                logger.Warning("Failed to load assembly {AssemblyName}", name);
+            }
 
         return assemblies;
     });
+
     public static IEnumerable<Assembly> ProjectsAssemblies => _projectsAssemblies.Value;
 }

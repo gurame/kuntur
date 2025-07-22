@@ -10,7 +10,9 @@ internal class OutboxRepository(IDbConnection connection, KunturDbContext dbCont
 {
     private readonly IDbConnection _connection = connection;
     private readonly KunturDbContext _dbContext = dbContext;
-    public async Task AddAsync(OutboxIntegrationEvent outboxIntegrationEvent, CancellationToken cancellationToken = default)
+
+    public async Task AddAsync(OutboxIntegrationEvent outboxIntegrationEvent,
+        CancellationToken cancellationToken = default)
     {
         const string sql = @"
             INSERT INTO marketplace.""OutboxIntegrationEvent"" (""EventName"", ""EventContent"")
@@ -20,7 +22,7 @@ internal class OutboxRepository(IDbConnection connection, KunturDbContext dbCont
         {
             outboxIntegrationEvent.EventName,
             outboxIntegrationEvent.EventContent
-        }, transaction: _dbContext.Database.CurrentTransaction?.GetDbTransaction());
+        }, _dbContext.Database.CurrentTransaction?.GetDbTransaction());
     }
 
     public async Task<List<OutboxIntegrationEvent>> GetPendingEventsAsync(CancellationToken cancellationToken = default)
@@ -34,13 +36,14 @@ internal class OutboxRepository(IDbConnection connection, KunturDbContext dbCont
         return [.. result];
     }
 
-    public async Task RemoveRangeAsync(IEnumerable<OutboxIntegrationEvent> outboxIntegrationEvents, CancellationToken cancellationToken = default)
+    public async Task RemoveRangeAsync(IEnumerable<OutboxIntegrationEvent> outboxIntegrationEvents,
+        CancellationToken cancellationToken = default)
     {
         const string sql = @"DELETE FROM marketplace.""OutboxIntegrationEvent"" WHERE ""Id"" = ANY(@Ids);";
 
         var ids = outboxIntegrationEvents.Select(e => e.Id).ToArray();
 
         await _connection.ExecuteAsync(sql, new { Ids = ids },
-            transaction: _dbContext.Database.CurrentTransaction?.GetDbTransaction());
+            _dbContext.Database.CurrentTransaction?.GetDbTransaction());
     }
 }

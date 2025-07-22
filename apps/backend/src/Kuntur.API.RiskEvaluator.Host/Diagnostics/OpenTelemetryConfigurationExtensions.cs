@@ -40,11 +40,10 @@ public static class OpenTelemetryConfigurationExtensions
                     .AddOtlpExporter(options =>
                         options.Endpoint = otlpEndpoint)
             )
-            .WithLogging(
-                logging=>
-                    logging
-                        .AddOtlpExporter(options => 
-                            options.Endpoint = otlpEndpoint)
+            .WithLogging(logging =>
+                logging
+                    .AddOtlpExporter(options =>
+                        options.Endpoint = otlpEndpoint)
             );
 
         return builder;

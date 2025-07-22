@@ -1,4 +1,5 @@
 namespace Kuntur.API.Marketplace.Infrastructure.IntegrationEvents.Settings;
+
 internal class MessageBrokerSettings
 {
     public const string Section = "MessageBroker";

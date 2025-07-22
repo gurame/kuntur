@@ -1,6 +1,6 @@
+using Kuntur.API.Identity.Infrastructure;
 using Kuntur.API.Shared;
 using Kuntur.API.Shared.Infrastructure.Endpoints;
-using Kuntur.API.Identity.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;

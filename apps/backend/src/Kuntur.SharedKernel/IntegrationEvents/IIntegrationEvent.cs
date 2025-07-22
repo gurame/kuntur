@@ -4,5 +4,7 @@ using MediatR;
 
 namespace Kuntur.SharedKernel.IntegrationEvents;
 
-[JsonDerivedType(typeof(MarketplaceCreatedIntegrationEvent), typeDiscriminator: nameof(MarketplaceCreatedIntegrationEvent))]
-public interface IIntegrationEvent : INotification { }
+[JsonDerivedType(typeof(MarketplaceCreatedIntegrationEvent), nameof(MarketplaceCreatedIntegrationEvent))]
+public interface IIntegrationEvent : INotification
+{
+}

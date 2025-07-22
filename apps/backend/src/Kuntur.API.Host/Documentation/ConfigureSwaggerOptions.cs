@@ -8,10 +8,10 @@ namespace Kuntur.API.Host.Documentation;
 public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider p) : IConfigureOptions<SwaggerGenOptions>
 {
     private readonly IApiVersionDescriptionProvider _provider = p;
+
     public void Configure(SwaggerGenOptions options)
     {
         foreach (var description in _provider.ApiVersionDescriptions)
-        {
             options.SwaggerDoc(
                 description.GroupName,
                 new OpenApiInfo
@@ -23,16 +23,15 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider p) : IConfig
                     Contact = new OpenApiContact
                     {
                         Name = "Kuntur",
-                        Url = new Uri("https://kuntur.com"),
+                        Url = new Uri("https://kuntur.com")
                     },
                     License = new OpenApiLicense
                     {
                         Name = "Use under Kuntur License",
-                        Url = new Uri("https://kuntur.com/license"),
+                        Url = new Uri("https://kuntur.com/license")
                     }
                 });
-        }
-        
+
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
             In = ParameterLocation.Header,
@@ -42,7 +41,7 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider p) : IConfig
             BearerFormat = "JWT",
             Scheme = "Bearer"
         });
-        
+
         options.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
             {

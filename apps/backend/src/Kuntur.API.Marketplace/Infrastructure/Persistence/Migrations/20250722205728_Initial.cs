@@ -30,22 +30,6 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Marketplace",
-                schema: "marketplace",
-                columns: table => new
-                {
-                    MarketplaceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TaxId = table.Column<string>(type: "text", nullable: false),
-                    MaxSellers = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    SubscriptionId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Marketplace", x => x.MarketplaceId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OutboxIntegrationEvent",
                 schema: "marketplace",
                 columns: table => new
@@ -74,6 +58,22 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Subscription", x => x.SubscriptionId);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "TenantMarketplace",
+                schema: "marketplace",
+                columns: table => new
+                {
+                    MarketplaceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TaxId = table.Column<string>(type: "text", nullable: false),
+                    MaxSellers = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    SubscriptionId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TenantMarketplace", x => x.MarketplaceId);
+                });
         }
 
         /// <inheritdoc />
@@ -84,15 +84,15 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                 schema: "marketplace");
 
             migrationBuilder.DropTable(
-                name: "Marketplace",
-                schema: "marketplace");
-
-            migrationBuilder.DropTable(
                 name: "OutboxIntegrationEvent",
                 schema: "marketplace");
 
             migrationBuilder.DropTable(
                 name: "Subscription",
+                schema: "marketplace");
+
+            migrationBuilder.DropTable(
+                name: "TenantMarketplace",
                 schema: "marketplace");
         }
     }

@@ -1,4 +1,5 @@
 namespace Kuntur.API.Shared.Domain.ValueObjects;
+
 public sealed class Name(string firstName, string lastName) : ValueObject
 {
     public string FirstName { get; } = firstName.ThrowIfEmptyOrWhiteSpace();

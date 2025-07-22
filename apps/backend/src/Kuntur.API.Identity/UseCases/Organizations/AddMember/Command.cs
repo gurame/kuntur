@@ -9,17 +9,15 @@ internal class AddMemberToOrganizationCommandHandler(IIdentityProvider identityP
     ICommandHandler<AddMemberToOrganizationCommand, ErrorOr<Success>>
 {
     private readonly IIdentityProvider _identityProvider = identityProvider;
+
     public async Task<ErrorOr<Success>> Handle(AddMemberToOrganizationCommand cmd, CancellationToken ct)
     {
         var result = await _identityProvider.AddMemberToOrganizationAsync(
-            organizationId: new OrganizationId(cmd.OrganizationId),
-            userId: new UserId(cmd.UserId),
+            new OrganizationId(cmd.OrganizationId),
+            new UserId(cmd.UserId),
             ct);
 
-        if (result.IsError)
-        {
-            return result.Errors;
-        }
+        if (result.IsError) return result.Errors;
 
         return Result.Success;
     }

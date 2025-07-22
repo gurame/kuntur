@@ -1,11 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\Kuntur.API.Shared\Kuntur.API.Shared.csproj" />
-    <ProjectReference Include="..\Kuntur.API.Marketplace.Contracts\Kuntur.API.Marketplace.Contracts.csproj" />
-    <ProjectReference Include="..\Kuntur.SharedKernel\Kuntur.SharedKernel.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Dapper" />
-    <PackageReference Include="rabbitmq.client" />
-  </ItemGroup>
+    <PropertyGroup>
+        <RootNamespace>Kuntur.API.Marketplace</RootNamespace>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Kuntur.API.Shared\Kuntur.API.Shared.csproj"/>
+        <ProjectReference Include="..\Kuntur.API.Marketplace.Contracts\Kuntur.API.Marketplace.Contracts.csproj"/>
+        <ProjectReference Include="..\Kuntur.SharedKernel\Kuntur.SharedKernel.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Dapper"/>
+        <PackageReference Include="rabbitmq.client"/>
+    </ItemGroup>
 </Project>

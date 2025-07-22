@@ -15,10 +15,10 @@ public class RabbitMqBasicAsyncConsumer(
     IServiceScopeFactory serviceScopeFactory,
     ILogger<RabbitMqBasicAsyncConsumer> logger) : IAsyncBasicConsumer
 {
-    public IChannel? Channel { get; set; }
+    private readonly ILogger _logger = logger;
 
     private readonly IServiceScopeFactory _serviceScopeFactory = serviceScopeFactory;
-    private readonly ILogger _logger = logger;
+    public IChannel? Channel { get; set; }
 
     public async Task HandleBasicDeliverAsync(
         string consumerTag,
@@ -38,12 +38,13 @@ public class RabbitMqBasicAsyncConsumer(
 
         try
         {
-            _logger.LogInformation("Received integration event from exchange '{Exchange}' with routing key '{RoutingKey}'.", exchange, routingKey);
+            _logger.LogInformation(
+                "Received integration event from exchange '{Exchange}' with routing key '{RoutingKey}'.", exchange,
+                routingKey);
 
             foreach (var header in properties.Headers ?? Enumerable.Empty<KeyValuePair<string, object?>>())
-            {
-                _logger.LogInformation("Header: {Key} = {Value}", header.Key, Encoding.UTF8.GetString((byte[])header.Value!));
-            }
+                _logger.LogInformation("Header: {Key} = {Value}", header.Key,
+                    Encoding.UTF8.GetString((byte[])header.Value!));
 
             var parentContext = RabbitMqDiagnostics.Propagator.Extract(default,
                 properties,
@@ -55,7 +56,8 @@ public class RabbitMqBasicAsyncConsumer(
             const string operation = "process";
             var activityName = $"{operation} {routingKey}";
 
-            using var activity = RabbitMqDiagnostics.ActivitySource.StartActivity(activityName, ActivityKind.Consumer, parentContext.ActivityContext);
+            using var activity = RabbitMqDiagnostics.ActivitySource.StartActivity(activityName, ActivityKind.Consumer,
+                parentContext.ActivityContext);
             SetActivityContext(activity, routingKey, operation);
             activity?.SetTag("source_app.name", Baggage.Current.GetBaggage("source_app.name"));
 
@@ -64,7 +66,8 @@ public class RabbitMqBasicAsyncConsumer(
             var integrationEvent = JsonSerializer.Deserialize<IIntegrationEvent>(message);
             integrationEvent.ThrowIfNull();
 
-            _logger.LogInformation("Publishing integration event of type: {IntegrationEventType}", integrationEvent.GetType().Name);
+            _logger.LogInformation("Publishing integration event of type: {IntegrationEventType}",
+                integrationEvent.GetType().Name);
 
             var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
             await publisher.Publish(integrationEvent, cancellationToken);
@@ -75,7 +78,7 @@ public class RabbitMqBasicAsyncConsumer(
                 return;
             }
 
-            await Channel.BasicAckAsync(deliveryTag, multiple: false, cancellationToken: cancellationToken);
+            await Channel.BasicAckAsync(deliveryTag, false, cancellationToken);
 
             _logger.LogInformation("Integration event acknowledged successfully.");
         }
@@ -119,7 +122,9 @@ public class RabbitMqBasicAsyncConsumer(
         activity.SetTag("messaging.operation", operation);
         activity.SetTag("messaging.destination.name", eventName);
     }
-    private static IEnumerable<string> ExtractTraceContextFromBasicProperties(IReadOnlyBasicProperties props, string key)
+
+    private static IEnumerable<string> ExtractTraceContextFromBasicProperties(IReadOnlyBasicProperties props,
+        string key)
     {
         if (!props.Headers!.TryGetValue(key, out var value)) return [];
 

@@ -7,6 +7,7 @@ public sealed class ContactInfo(Name name, EmailAddress email, PhoneNumber? phon
     public Name Name { get; } = name.ThrowIfNull();
     public EmailAddress Email { get; } = email.ThrowIfNull();
     public PhoneNumber Phone { get; } = phone.ThrowIfNull();
+
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Name;

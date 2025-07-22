@@ -22,28 +22,6 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Kuntur.API.Shared.Infrastructure.IntegrationEvents.OutboxIntegrationEvent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("Id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("EventContent")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("EventName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OutboxIntegrationEvent", "marketplace");
-                });
-
             modelBuilder.Entity("Kuntur.API.Marketplace.Domain.AdminAggregate.Admin", b =>
                 {
                     b.Property<Guid>("Id")
@@ -63,7 +41,29 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
                     b.ToTable("Admin", "marketplace");
                 });
 
-            modelBuilder.Entity("Kuntur.API.Marketplace.Domain.MarketplaceAggregate.MarketplaceAgg", b =>
+            modelBuilder.Entity("Kuntur.API.Marketplace.Domain.SubscriptionAggregate.Subscription", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("SubscriptionId");
+
+                    b.Property<int>("SubscriptionType")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("_adminId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("AdminId");
+
+                    b.Property<int>("_maxSellers")
+                        .HasColumnType("integer")
+                        .HasColumnName("MaxSellers");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subscription", "marketplace");
+                });
+
+            modelBuilder.Entity("Kuntur.API.Marketplace.Domain.TenantMarketplaceAggregate.TenantMarketplace", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -89,29 +89,29 @@ namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Marketplace", "marketplace");
+                    b.ToTable("TenantMarketplace", "marketplace");
                 });
 
-            modelBuilder.Entity("Kuntur.API.Marketplace.Domain.SubscriptionAggregate.Subscription", b =>
+            modelBuilder.Entity("Kuntur.SharedKernel.IntegrationEvents.OutboxIntegrationEvent", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("SubscriptionId");
-
-                    b.Property<int>("SubscriptionType")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("_adminId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("AdminId");
-
-                    b.Property<int>("_maxSellers")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("MaxSellers");
+                        .HasColumnName("Id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EventContent")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EventName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subscription", "marketplace");
+                    b.ToTable("OutboxIntegrationEvent", "marketplace");
                 });
 #pragma warning restore 612, 618
         }

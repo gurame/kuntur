@@ -19,11 +19,11 @@ public static class HttpClientResilienceExtensions
                 .HandleTransientHttpError()
                 .OrResult(msg => msg.StatusCode == HttpStatusCode.TooManyRequests)
                 .WaitAndRetryAsync(
-                    retryCount: 5,
-                    sleepDurationProvider: retryAttempt =>
+                    5,
+                    retryAttempt =>
                         TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)) +
                         TimeSpan.FromMilliseconds(Random.Shared.Next(0, 100)),
-                    onRetry: (outcome, timespan, retryAttempt, context) =>
+                    (outcome, timespan, retryAttempt, context) =>
                     {
                         logger.LogWarning(outcome.Exception, "Retry {RetryAttempt} after {Delay} due to {Reason}",
                             retryAttempt, timespan, outcome.Exception?.Message ?? outcome.Result?.ReasonPhrase);
@@ -33,16 +33,17 @@ public static class HttpClientResilienceExtensions
             var circuitBreakerPolicy = HttpPolicyExtensions
                 .HandleTransientHttpError()
                 .CircuitBreakerAsync(
-                    handledEventsAllowedBeforeBreaking: 5,
-                    durationOfBreak: TimeSpan.FromSeconds(30),
-                    onBreak: (outcome, breakDelay) =>
+                    5,
+                    TimeSpan.FromSeconds(30),
+                    (outcome, breakDelay) =>
                     {
                         logger.LogWarning("Circuit broken due to {Reason}, retrying after {BreakDelay}",
                             outcome.Exception?.Message ?? outcome.Result?.ReasonPhrase, breakDelay);
                     },
-                    onReset: () => logger.LogInformation("Circuit reset"));
+                    () => logger.LogInformation("Circuit reset"));
 
-            return request.Method == HttpMethod.Get || request.Method == HttpMethod.Head || request.Method == HttpMethod.Put || request.Method == HttpMethod.Delete
+            return request.Method == HttpMethod.Get || request.Method == HttpMethod.Head ||
+                   request.Method == HttpMethod.Put || request.Method == HttpMethod.Delete
                 ? Policy.WrapAsync(retryPolicy, circuitBreakerPolicy)
                 : circuitBreakerPolicy;
         });

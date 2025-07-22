@@ -11,10 +11,11 @@ internal class OutboxWriterEventHandler(IOutboxRepository outboxRepository) :
     INotificationHandler<MarketplaceSetEvent>
 {
     private readonly IOutboxRepository _outboxRepository = outboxRepository;
+
     public async Task Handle(MarketplaceSetEvent notification, CancellationToken cancellationToken)
     {
         var integrationEvent = new MarketplaceCreatedIntegrationEvent(
-            notification.Marketplace.Id.Value, notification.Marketplace.Name);
+            notification.TenantMarketplace.Id.Value, notification.TenantMarketplace.Name);
 
         await AddOutboxIntegrationEventAsync(integrationEvent);
     }
@@ -23,8 +24,7 @@ internal class OutboxWriterEventHandler(IOutboxRepository outboxRepository) :
     {
         // TODO: Propagate ActivityContext to the outbox event
         await _outboxRepository.AddAsync(new OutboxIntegrationEvent(
-            eventName: integrationEvent.GetType().Name,
-            eventContent: JsonSerializer.Serialize(integrationEvent)));
+            integrationEvent.GetType().Name,
+            JsonSerializer.Serialize(integrationEvent)));
     }
 }
-

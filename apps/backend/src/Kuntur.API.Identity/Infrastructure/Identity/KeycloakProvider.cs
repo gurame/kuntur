@@ -7,8 +7,9 @@ namespace Kuntur.API.Identity.Infrastructure.Identity;
 
 internal class KeycloakProvider(HttpClient httpClient) : IIdentityProvider
 {
-    private readonly string realm = "kuntur";
     private readonly HttpClient _httpClient = httpClient;
+    private readonly string realm = "kuntur";
+
     public async Task<ErrorOr<UserId>> CreateUserAsync(
         Name name,
         EmailAddress emailAddress,
@@ -32,7 +33,7 @@ internal class KeycloakProvider(HttpClient httpClient) : IIdentityProvider
                     temporary = false
                 }
             }
-        }, cancellationToken: ct);
+        }, ct);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -41,13 +42,11 @@ internal class KeycloakProvider(HttpClient httpClient) : IIdentityProvider
         }
 
         var user = await _httpClient.GetFromJsonAsync<KeyclockUserRepresentation>(response.Headers.Location, ct);
-        if (user is null)
-        {
-            return Error.Failure("IdentityProvider.CreateUser", "Failed to deserialize user response");
-        }
+        if (user is null) return Error.Failure("IdentityProvider.CreateUser", "Failed to deserialize user response");
 
         return new UserId(user.Id);
     }
+
     public async Task<ErrorOr<Success>> DeleteUserAsync(UserId userId, CancellationToken ct)
     {
         var response = await _httpClient.DeleteAsync($"/admin/realms/{realm}/users/{userId.Value}", ct);
@@ -64,9 +63,9 @@ internal class KeycloakProvider(HttpClient httpClient) : IIdentityProvider
     {
         var response = await _httpClient.PostAsJsonAsync($"/realms/{realm}/orgs", new
         {
-            name = name,
-            domains = new string[] { name },
-        }, cancellationToken: ct);
+            name,
+            domains = new[] { name }
+        }, ct);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -74,18 +73,20 @@ internal class KeycloakProvider(HttpClient httpClient) : IIdentityProvider
             return Error.Failure("IdentityProvider.CreateOrganization", error);
         }
 
-        var organization = await _httpClient.GetFromJsonAsync<KeycloakOrganizationRepresentation>(response.Headers.Location, ct);
+        var organization =
+            await _httpClient.GetFromJsonAsync<KeycloakOrganizationRepresentation>(response.Headers.Location, ct);
         if (organization is null)
-        {
             return Error.Failure("IdentityProvider.CreateOrganization", "Failed to deserialize organization response");
-        }
 
         return new OrganizationId(organization.Id);
     }
 
-    public async Task<ErrorOr<Success>> AddMemberToOrganizationAsync(OrganizationId organizationId, UserId userId, CancellationToken ct)
+    public async Task<ErrorOr<Success>> AddMemberToOrganizationAsync(OrganizationId organizationId, UserId userId,
+        CancellationToken ct)
     {
-        var response = await _httpClient.PutAsJsonAsync($"/realms/{realm}/orgs/{organizationId.Value}/members/{userId.Value}", new { }, ct);
+        var response =
+            await _httpClient.PutAsJsonAsync($"/realms/{realm}/orgs/{organizationId.Value}/members/{userId.Value}",
+                new { }, ct);
 
         if (!response.IsSuccessStatusCode)
         {

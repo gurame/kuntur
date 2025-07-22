@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Kuntur.API.Marketplace.Infrastructure.Persistence.Configurations;
+
 public class OutboxIntegrationEventConfiguration : IEntityTypeConfiguration<OutboxIntegrationEvent>
 {
     public void Configure(EntityTypeBuilder<OutboxIntegrationEvent> builder)

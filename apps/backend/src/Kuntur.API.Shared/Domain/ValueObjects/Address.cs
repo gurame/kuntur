@@ -9,6 +9,7 @@ public sealed class Address(string street, string city, string state, string zip
     public string State { get; } = state.ThrowIfEmptyOrWhiteSpace();
     public string ZipCode { get; } = zipCode.ThrowIfEmptyOrWhiteSpace();
     public CountryCode Country { get; } = country.ThrowIfNull();
+
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Street;

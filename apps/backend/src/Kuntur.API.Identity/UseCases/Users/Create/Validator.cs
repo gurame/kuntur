@@ -34,7 +34,7 @@ internal class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             .NotEmpty()
             .Matches(@"^\+?[1-9]\d{1,14}$")
             .WithMessage("Phone number must be a valid international format.");
-            
+
         RuleFor(x => x.Password)
             .NotNull()
             .NotEmpty()

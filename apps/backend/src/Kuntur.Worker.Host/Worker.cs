@@ -6,6 +6,7 @@ public class Worker(IConsumer consumer, ILogger<Worker> logger) : BackgroundServ
 {
     private readonly IConsumer _consumer = consumer;
     private readonly ILogger<Worker> _logger = logger;
+
     protected override async Task ExecuteAsync(CancellationToken ct)
     {
         await _consumer.ConsumeAsync(ct);

@@ -11,7 +11,7 @@ public class ConfigureSwaggerUIOptions(IApiVersionDescriptionProvider p) : IConf
     public void Configure(SwaggerUIOptions c)
     {
         c.DocumentTitle = "Kuntur API";
-        c.RoutePrefix   = "docs";
+        c.RoutePrefix = "docs";
 
         // TODO: Uncomment this when we have multiple versions fixed
         // foreach (var desc in _provider.ApiVersionDescriptions)

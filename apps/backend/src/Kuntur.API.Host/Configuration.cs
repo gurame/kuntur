@@ -1,17 +1,18 @@
 using Carter;
+using Kuntur.API.Host.Diagnostics;
+using Kuntur.API.Host.Documentation;
+using Kuntur.API.Host.Versioning;
 using Kuntur.API.Shared;
 using Kuntur.API.Shared.Infrastructure;
 using Kuntur.API.Shared.Infrastructure.Persistence;
-using Kuntur.API.Host.Diagnostics;
-using Kuntur.API.Host.Documentation;
-using Kuntur.API.Host.Logging;
-using Kuntur.API.Host.Versioning;
+using ILogger = Serilog.ILogger;
 
 namespace Kuntur.API.Host;
+
 public static class Configuration
 {
     public static WebApplicationBuilder AddServices(this WebApplicationBuilder builder,
-        Serilog.ILogger logger)
+        ILogger logger)
     {
         builder.Services.AddHttpContextAccessor();
 
@@ -32,6 +33,7 @@ public static class Configuration
 
         return builder;
     }
+
     public static WebApplication UseApi(this WebApplication app)
     {
         app.UseExceptionHandler();
@@ -41,13 +43,13 @@ public static class Configuration
         app.UseApiVersioning();
 
         app.MapGet("/", () => Results.Content(
-            """
-            <h1>Kuntur API is running</h1>
-            <p>Visit <a href="/docs">/docs</a> for documentation.</p>
-            """,
-            "text/html"
-        ))
-        .ExcludeFromDescription();
+                """
+                <h1>Kuntur API is running</h1>
+                <p>Visit <a href="/docs">/docs</a> for documentation.</p>
+                """,
+                "text/html"
+            ))
+            .ExcludeFromDescription();
 
         app.MapGroup(string.Empty)
             .WithApiVersionSet(ApiVersioning.VersionSet)
@@ -58,7 +60,7 @@ public static class Configuration
         return app;
     }
 
-    public static WebApplicationBuilder AddModules(this WebApplicationBuilder builder, Serilog.ILogger logger)
+    public static WebApplicationBuilder AddModules(this WebApplicationBuilder builder, ILogger logger)
     {
         builder.Services.AddModules(builder.Configuration, logger);
         return builder;

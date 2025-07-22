@@ -1,6 +1,4 @@
-using Asp.Versioning.ApiExplorer;
 using Microsoft.Extensions.Options;
-using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
@@ -21,10 +19,7 @@ public static class ApiDocumentation
 
     public static IApplicationBuilder UseApiDocumentation(this WebApplication app)
     {
-        app.UseSwagger(c =>
-        {
-            c.RouteTemplate = "docs/{documentName}/swagger.json";
-        });
+        app.UseSwagger(c => { c.RouteTemplate = "docs/{documentName}/swagger.json"; });
         app.UseSwaggerUI();
 
         return app;
